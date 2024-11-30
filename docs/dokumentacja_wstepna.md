@@ -31,7 +31,7 @@ Problem ten spróbjemy zniwelować poprzez wprowadzenie dynamicznej zmiany wspó
 - Parametry algorytmu:
   - Liczba cząstek w roju oraz liczba iteracji są ustalane na początku i pozostają stałe w trakcie pracy algorytmu.
   - Parametry wpływające na ruch cząstek (np. współczynniki wpływu optimum lokalnego i globalnego) są dobrane na podstawie literatury.
-  - Dynamiczny współczynnik bezwładności: Zmiana współczynnika bezwładności następuje zgodnie z #TODO# w trakcie iteracji.
+  - Dynamiczny współczynnik bezwładności: Zmiana współczynnika bezwładności następuje zgodnie z wzorem $w'=w*u^{-k}$, gdzie $w \in [0,1]$ to bazowy współczynnik bezwładności, $u \in [1.0001, 1.005]$ to siła wytracania wartości współczynnika, a $k$ to numer iteracji.
 
 ## Sposób badania jakości rozwiązania
 
