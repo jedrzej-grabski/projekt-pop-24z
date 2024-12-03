@@ -23,17 +23,14 @@ Każda z cząstek posiada swoją prędkość oraz pozycję w przestrzeni rozwią
 Ponadto zapamiętywane jest najlepsze rozwiązanie znalezione do tej pory przez każdą z cząstek (optimum lokalne, niewspółdzielone
 z resztą populacji), a także najlepsze rozwiązanie z całego roju (optimum globalne, współdzielone przez wszystkie cząstki).
 
-Prędkość \(i\)-tej cząstki w epoce \(k+1\) dana jest następującym wzorem:\[V_i(k+1) = wV_i(k) + 2 r_1(P_i(k) - X_i(k)) + 2 r_2(P_g(k) - X_i(k))\]
-gdzie \(w\) oznacza współczynnik bezwładności, \(P_i\) położenie optimum lokalnego, \(P_g\) położenie optimum globalnego, a współczynniki \(r_1\) i \(r_2\)
-losowane są z rozkładem \(U[0, 1]\) i przeskalowane przez 2, aby \(E(r_n)\) = 1. Na podstawie powyższego wzoru obserwujemy,
+Prędkość \(i\)-tej cząstki w epoce \(k+1\) dana jest następującym wzorem:\[V_i(k+1) = wV_i(k) + \phi_p r_1(P_i(k) - X_i(k)) + \phi_g r_2(P_g(k) - X_i(k))\]
+gdzie \(w\) oznacza współczynnik bezwładności, \(P_i\) położenie optimum lokalnego, \(P_g\) położenie optimum globalnego, współczynniki \(r_1\) i \(r_2\)
+losowane są z rozkładem \(U[0, 1]\), a \(\phi_p\) oraz \(\phi_g\) oznaczają kolejno parametryzowane współczynniki wagi - poznawczy i społeczny. Na podstawie powyższego wzoru obserwujemy,
 że wektor prędkości tworzony jest na podstawie trzech składowych, a współczynnik bezwładności określa wagę składowej będącej
 prędkością w poprzedniej iteracji. Im mniejsza wartość tego współczynnika, tym bardziej zwrotne i skłonne do eksploatacji są cząstki.
-Ze zwiększeniem wartości współczynnika bezwładności wiąże się natomiast większa skłonność do "przestrzeliwania" optimów lokalnych i eksplorowania przestrzeni
-przeszukiwań.
+Ze zwiększeniem wartości współczynnika bezwładności wiąże się natomiast większa skłonność do eksploracji przestrzeni, co może jednak skutkować "przestrzeliwaniem"\space
+optimów lokalnych.
 
-Widzimy, że dzięki zastosowaniu takiego rozwiązania cząstki roju mogą szybciej pokonywać długie dystanse,
-gdzie należy wykonać serię długich kroków. Może on jednak wprowadzać też zjawisko "przestrzelenia" w późniejszych etapach
-algorytmu, gdy zależy nam na zbieganiu do optimum.
 
 
 \section{Propozycja rozwiązania}
@@ -57,7 +54,7 @@ Pozycje cząstek w roju są inicjalizowane losowo z rozkładem jednostajnym w gr
 \subsection*{Parametry algorytmu}
 \begin{itemize}
 	\item{Liczba cząstek w roju oraz liczba iteracji są ustalane na początku i pozostają stałe w trakcie pracy algorytmu.}
-	\item{ Parametry algorytmu (m.in ustalenie wartości wag optimum lokalnego i globalnego przy obliczaniu prędkości na \(2\)) dobrane zostały na podstawie literatury. }
+	\item{ Parametry algorytmu dobrane zostaną na podstawie literatury. }
 	\item{Dynamiczny współczynnik bezwładności: Zmiana współczynnika bezwładności następuje zgodnie z wzorem $w'=w*u^{-k}$, gdzie $w \in [0,1]$ to bazowy współczynnik bezwładności, $u \in [1.0001, 1.005]$ to siła wytracania wartości współczynnika, a $k$ to numer iteracji.}
 \end{itemize}
 
