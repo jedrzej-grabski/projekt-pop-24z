@@ -1,6 +1,6 @@
 import pytest
 
-from src.projekt_pop_24z.swarm.models import Swarm, Particle, Task
+from src.projekt_pop_24z.swarm.pso import Swarm, Particle, Task
 
 
 def test_update_global_best_minimize():
