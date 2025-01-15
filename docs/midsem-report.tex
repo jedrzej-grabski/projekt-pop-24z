@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{hyperref}
+\usepackage[ margin=20mm]{geometry}
+
+\title{Przeszukiwanie i optymalizacja - raport śródsemestralny}
+\author{Maksym Bieńkowski, Jędrzej Grabski}
+\date{15.01.2025}
+
+\begin{document}
+\maketitle
+\begin{centering}
+	\textbf{Temat projektu: }Algorytm roju cząstek z modyfikacjami dotyczącymi współczynnika bezwładności
+\end{centering}
+
+\section*{Postęp w projekcie}
+
+W ramach prac nad projektem stworzono bazową wersję algorytmu PSO (Particle Swarm Optimization), w której współczynnik bezwładności nie jest jeszcze dynamicznie modyfikowany. Dodatkowo zaimplementowano następujące funkcjonalności:
+
+\begin{itemize}
+	\item \textbf{Wybór rodzaju zadania optymalizacji (enumeracja \texttt{Task})} \\
+	      Umożliwienie definiowania różnych zadań, w których algorytm może być wykorzystany.
+
+	\item \textbf{Rejestrowanie przebiegu optymalizacji (klasa \texttt{Logger})} \\
+	      Gromadzenie danych o postępie i wynikach działania algorytmu w celu późniejszej, szczegółowej analizy.
+
+	\item \textbf{Wizualizacja wyników (klasa \texttt{Plotter})} \\
+	      Możliwość prezentacji zebranych danych w formie wykresów i analiz graficznych, co ułatwia wgląd w efektywność algorytmu.
+
+	\item \textbf{Tryb pojedynczego uruchomienia algorytmu} \\
+	      Jednorazowy start algorytmu, zebranie danych oraz ich wyświetlenie lub zapisanie w postaci obrazu, co usprawnia testy i demonstrację działania.
+\end{itemize}
+
+\section*{Dalsze prace}
+
+W najbliższym czasie planowane są następujące kroki rozwojowe:
+
+\begin{itemize}
+	\item \textbf{Dynamiczna zmiana współczynnika bezwładności} \\
+	      Wprowadzenie mechanizmu modyfikującego wartość współczynnika w trakcie działania algorytmu, aby lepiej dostosować się do różnych etapów optymalizacji.
+
+	\item \textbf{Bardziej szczegółowe gromadzenie danych} \\
+	      Rozszerzenie klasy \texttt{Logger} w celu zapisu dodatkowych statystyk.
+
+	\item \textbf{Obliczanie wskaźników jakości} \\
+	      Wprowadzenie omówionych w dokumentacji wstępnej miar oceny skuteczności algorytmu.
+
+	\item \textbf{Wizualizacja wyników na przestrzeni wielu uruchomień algorytmu} \\
+	      Rozbudowanie funkcjonalności klasy \texttt{Plotter} w taki sposób, aby możliwe było zestawienie rezultatów z kilku sesji optymalizacyjnych i ich porównanie.
+\end{itemize}
+
+\end{document}
