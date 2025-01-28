@@ -133,7 +133,7 @@ def pretty_print_result(result: OptimizationResult) -> None:
 
     # Optimization Results
     print("\nOptimization Results:")
-    print(f"- Best Position: {[round(pos, 9) for pos in result.best_position]}")
+    print(f"- Best Position: {[round(pos, 5) for pos in result.best_position]}")
     print(f"- Best Cost: {result.best_cost:.10f}")
     if result.logger.epsilon != -1:
         print(f"- Epsilon: {result.logger.epsilon}")
