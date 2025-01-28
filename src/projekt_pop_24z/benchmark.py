@@ -97,6 +97,10 @@ def run_benchmark_and_plot(
             case PlotType.GLOBAL_BEST_COSTS:
                 plotter.plot_global_best_costs()
             case PlotType.STARTING_AND_ENDING_POSITIONS:
+                if parameters.dimensions != 2:
+                    raise ValueError(
+                        "Starting and ending positions plot is only supported for 2D problems."
+                    )
                 plotter.plot_starting_and_ending_positions_two_dimensional()
 
     return result
