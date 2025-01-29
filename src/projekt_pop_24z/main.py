@@ -1,7 +1,5 @@
-from projekt_pop_24z.benchmark_functions.rosenbrock import Rosenbrock
 from projekt_pop_24z.utils.plotter import PlotDescription
 from src.projekt_pop_24z.benchmark import (
-    run_benchmark_and_plot,
     pretty_print_result,
     AlgorithmParameters,
     LogParameters,
@@ -17,15 +15,22 @@ from src.projekt_pop_24z.swarm.pso import Task
 from src.projekt_pop_24z.utils.plotter import PlotType
 
 
-EPSILON = 0.00001
-FUNCTION = Sphere
+# variables
+DIMENSIONS = 10
+FUNCTION = Rastrigin
+DYNAMIC_INERTIA = True
+INERTIA_DECAY = 1.0001
+INITIAL_INERTIA = 0.1
+EPSILON = 10e-5
 
-DYNAMIC_INERTIA = False
-INERTIA_DECAY = 1.0002
-
-DIMENSIONS = 2
-
+# constants
 SAVE_PATH = FUNCTION.name + ".png"
+SOCIAL_CONSTANT = 2.0
+COGNITIVE_CONSTANT = 2.0
+BOUNDS = [[-2.048, 2.048] for _ in range(DIMENSIONS)]
+TASK = Task.MINIMIZE
+ITERATIONS = 300
+SWARM_SIZE = 50
 
 
 def main():
