@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 import math
 from typing import Callable
-from projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
+from src.projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
 
 
 def ackley_function(position: list[float]) -> float:

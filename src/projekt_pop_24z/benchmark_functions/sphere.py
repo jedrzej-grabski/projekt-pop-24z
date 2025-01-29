@@ -1,5 +1,5 @@
 from dataclasses import field, dataclass
-from projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
+from src.projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
 from typing import Callable, List
 
 
