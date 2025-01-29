@@ -81,7 +81,9 @@ class Plotter:
         # Move the legend outside the plot
         plt.legend(bbox_to_anchor=(1.05, 0.5), loc="upper left", borderaxespad=0.0)
 
-        plt.savefig("start_end_" + self.plot_description.save_path, bbox_inches="tight")
+        plt.savefig(
+            "plots/start_end_" + self.plot_description.save_path, bbox_inches="tight"
+        )
 
         plt.clf()
 
@@ -126,6 +128,6 @@ class Plotter:
         ax.legend()
 
         # Save the plot
-        plt.savefig("global_best_" + self.plot_description.save_path)
+        plt.savefig("plots/global_best_" + self.plot_description.save_path)
 
         plt.clf()
