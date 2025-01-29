@@ -17,7 +17,7 @@ from src.projekt_pop_24z.swarm.pso import Task
 from src.projekt_pop_24z.utils.plotter import PlotType
 
 
-EPSILON = 0.001
+EPSILON = 0.00001
 FUNCTION = Sphere
 
 DYNAMIC_INERTIA = False
@@ -37,7 +37,7 @@ def main():
         bounds=bounds,
         dimensions=DIMENSIONS,
         task=Task.MINIMIZE,
-        iterations=100,
+        iterations=300,
         initial_inertia=0.8,
         cognitive_constant=2.0,
         social_constant=2.0,
@@ -50,16 +50,6 @@ def main():
         name=FUNCTION.name,
         optimum_value=FUNCTION.optimum_value,
     )
-
-    # result = run_benchmark_and_plot(
-    #     cost_function=FUNCTION.function,
-    #     parameters=parameters,
-    #     log_params=log_params,
-    #     plot_description=PlotDescription(
-    #         problem_name=FUNCTION.name, save_path=SAVE_PATH
-    #     ),
-    #     plot_types=[PlotType.GLOBAL_BEST_COSTS, PlotType.STARTING_AND_ENDING_POSITIONS],
-    # )
 
     result = run_benchmark_and_plot_aggregated(
         cost_function=FUNCTION.function,
