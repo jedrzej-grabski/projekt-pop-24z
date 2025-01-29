@@ -28,7 +28,7 @@ class Particle:
         self.position = [random.uniform(*bound) for bound in bounds]
         self.personal_best_position = self.position
         self.velocity = [
-            random.uniform(-abs(bound[1] - bound[0]), abs(bound[1] - bound[0]))
+            random.uniform(-abs(bound[1] - bound[0]) / 2, abs(bound[1] - bound[0]) / 2)
             for bound in bounds
         ]
 
