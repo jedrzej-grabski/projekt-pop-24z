@@ -91,10 +91,6 @@ class Swarm:
     current_iteration: int = field(init=False, default=0)
 
     def __post_init__(self):
-        if not self.dynamic_inertia and self.inertia_decay != 0:
-            raise ValueError(
-                "Inertia decay should be set only if dynamic_inertia is enabled."
-            )
 
         if not (1.0001 <= self.inertia_decay <= 1.005) and self.dynamic_inertia:
             raise ValueError("Inertia decay should be in the range [1.0001, 1.005].")
