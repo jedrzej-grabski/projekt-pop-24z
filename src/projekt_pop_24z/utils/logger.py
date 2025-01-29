@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import dataclass, field
 from copy import deepcopy
 
@@ -20,6 +21,81 @@ class SwarmLogger:
     iterations_until_epsilon: int = field(init=False, default=-1)
     particle_positions_history: list[list[list[float]]] = field(default_factory=list)
     inertia_history: list[float] = field(default_factory=list)
+
+    @classmethod
+    def aggregate(cls, loggers: list[SwarmLogger]) -> SwarmLogger:
+        """Aggregate multiple loggers into one by averaging their values.
+
+        Args:
+            loggers (list[SwarmLogger]): List of loggers to aggregate.
+
+        Returns:
+            SwarmLogger: The aggregated logger.
+        """
+        if not loggers:
+            raise ValueError("The loggers list should not be empty.")
+
+        num_loggers = len(loggers)
+        new_logger = deepcopy(loggers[0])
+
+        # Average global best costs
+        max_length = max(len(logger.global_best_costs) for logger in loggers)
+        new_logger.global_best_costs = [
+            sum(
+                logger.global_best_costs[i]
+                for logger in loggers
+                if i < len(logger.global_best_costs)
+            )
+            / num_loggers
+            for i in range(max_length)
+        ]
+
+        # Iterations remain the same
+        new_logger.iterations = loggers[0].iterations
+
+        # Average iterations until epsilon
+        valid_iterations = [
+            logger.iterations_until_epsilon
+            for logger in loggers
+            if logger.iterations_until_epsilon != -1
+        ]
+        new_logger.iterations_until_epsilon = int(
+            sum(valid_iterations) / len(valid_iterations) if valid_iterations else -1
+        )
+
+        # Average particle positions history
+        max_length = max(len(logger.particle_positions_history) for logger in loggers)
+        new_logger.particle_positions_history = [
+            [
+                [
+                    sum(
+                        logger.particle_positions_history[i][j][k]
+                        for logger in loggers
+                        if i < len(logger.particle_positions_history)
+                        and j < len(logger.particle_positions_history[i])
+                        and k < len(logger.particle_positions_history[i][j])
+                    )
+                    / num_loggers
+                    for k in range(len(loggers[0].particle_positions_history[0][0]))
+                ]
+                for j in range(len(loggers[0].particle_positions_history[0]))
+            ]
+            for i in range(max_length)
+        ]
+
+        # Average inertia history
+        max_length = max(len(logger.inertia_history) for logger in loggers)
+        new_logger.inertia_history = [
+            sum(
+                logger.inertia_history[i]
+                for logger in loggers
+                if i < len(logger.inertia_history)
+            )
+            / num_loggers
+            for i in range(max_length)
+        ]
+
+        return new_logger
 
     def log_global_best_cost(self, best_cost: float) -> None:
         """Log the global best cost found by the swarm.
