@@ -3,6 +3,7 @@
 \usepackage[polish]{babel}
 \usepackage{hyperref}
 \usepackage[ bottom=30mm, top=20mm, left=30mm, right=30mm]{geometry}
+\usepackage{placeins}
 
 \title{Przeszukiwanie i optymalizacja - dokumentacja końcowa}
 \author{Maksym Bieńkowski, Jędrzej Grabski}
@@ -86,26 +87,89 @@ Ze względu na dużą liczbę parametrów, część z nich musiała zostać usta
 	\item Za każdym razem algorytmy były uruchamiane z maksymalną liczbą 300 iteracji oraz $eps = 1e-5$. Po znalezieniu
 	      punktu oddalonego o $eps$ od minimum globalnego, algorytmy kończyły działanie. \textbf{TODO}
 	\item Wartość współczynnika bezwładności lub, w przypadku dynamicznego współczynnika bezwładności $w = 0.1$
+	\item Wartość współczynnika $u$ używanego do obniżania wartości bezwładności $u = 1.0001$
 \end{itemize}
 
 Początkowa wartość współczynnika bezwładności została wybrana eksperymentalnie przez zbadanie najlepszej wartości f. Rosenbrocka w 10 wymiarach w zależności od
-jego wartości. Wyniki znajdują się w tabeli \ref{tab:rosenbrock_values}.
+jego wartości. Wyniki znajdują się w tabeli \ref{tab:test_rosenbrock}.
 
 \begin{table}[h]
 	\centering
-	\label{tab:rosenbrock_values}
-	\begin{tabular}{c|c c c c c}
+	\label{tab:test_rosenbrock}
+	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline
-		Dynamiczny współczynnik bezwładności / $\omega_0$ & 0.05 & 0.1 & 0.2 & 0.4 & 0.7  \\
+		DI / $\omega_0$ & 0.05 & 0.1 & 0.2 & 0.4 & 0.7  \\
 		\hline
-		Nie                                               & 36   & 34  & 47  & 62  & 1798 \\
-		Tak                                               & 30   & 29  & 40  & 60  & 1539 \\
+		Nie             & 36   & 34  & 47  & 62  & 1798 \\
+		Tak             & 30   & 29  & 40  & 60  & 1539 \\
 		\hline
 	\end{tabular}
 	\caption{Zaokrąglona wartość f. Rosenbrocka dla najlepszego znalezionego punktu w zależności od startowego współczynnika bezwładności}
 \end{table}
 
-Badanie było przeprowadzone dla różnych funkcji, jednak w innych wypadkach wyniki były do siebie znacznie bardziej zbliżone.
+
+Badanie było przeprowadzone dla różnych funkcji, wyniki były zbliżone.
+Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości współczynnika $u$.
+
+
+\pagebreak
+\subsection*{Porównanie ze względu na jakość rozwiązań}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		DI  / Dim & 5                      & 10     & 20     \\
+		\hline
+		Nie       & $8.90 \times 10^{-12}$ & 0.0184 & 2.2144 \\
+		Tak       & $6.93 \times 10^{-12}$ & 0.0243 & 2.2864 \\
+		\hline
+	\end{tabular}
+	\caption{Zaokrąglona wartość f. sferycznej dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\label{tab:sphere_values}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		DI / Dim & 5     & 10     & 20      \\
+		\hline
+		Nie      & 3.546 & 29.157 & 413.303 \\
+		Tak      & 2.516 & 33.790 & 414.403 \\
+		\hline
+	\end{tabular}
+	\caption{Zaokrąglona wartość f. Rosenbrocka dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\label{tab:rosenbrock_values}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		DI / Dim & 5     & 10     & 20     \\
+		\hline
+		Nie      & 7.959 & 18.453 & 44.838 \\
+		Tak      & 7.697 & 19.518 & 46.823 \\
+		\hline
+	\end{tabular}
+	\caption{Zaokrąglona wartość f. Rastrigina dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\label{tab:rastrigin_values}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		DI / Dim & 5     & 10    & 20    \\
+		\hline
+		Nie      & 0.346 & 1.486 & 3.102 \\
+		Tak      & 0.402 & 1.578 & 3.038 \\
+		\hline
+	\end{tabular}
+	\caption{Zaokrąglona wartość f. Ackleya dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\label{tab:ackley_values}
+\end{table}
 
 \subsection*{Wizualizacja trajektorii przestrzeni}
 Dla każdego przeprowadzonego badania przedstawiony będzie wykres wartości funkcji celu w \(P_g\) na przestrzeni iteracji.
