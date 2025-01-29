@@ -1,0 +1,82 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{hyperref}
+\usepackage[ bottom=30mm, top=20mm, left=30mm, right=30mm]{geometry}
+
+\title{Przeszukiwanie i optymalizacja - dokumentacja końcowa}
+\author{Maksym Bieńkowski, Jędrzej Grabski}
+\date{29.01.2025}
+
+\begin{document}
+\maketitle
+\begin{centering}
+	\textbf{Temat projektu: }Algorytm roju cząstek z modyfikacjami dotyczącymi współczynnika bezwładności
+\end{centering}
+
+\section{Analiza problemu}
+
+Ideą Algorytmu Roju Cząstek (PSO - Particle Swarm Optimalization), jest symulowanie populacji ("roju"),
+która rozwija się na podstawie wiedzy pojedynczych osobników ("cząstek") oraz pewnej wiedzy dzielonej.
+Każda z cząstek posiada swoją prędkość oraz pozycję w przestrzeni rozwiązań.
+Ponadto zapamiętywane jest najlepsze rozwiązanie znalezione do tej pory przez każdą z cząstek (optimum lokalne, niewspółdzielone
+z resztą populacji), a także najlepsze rozwiązanie z całego roju (optimum globalne, współdzielone przez wszystkie cząstki).
+
+Prędkość \(i\)-tej cząstki w epoce \(k+1\) dana jest następującym wzorem:\[V_i(k+1) = wV_i(k) + \phi_p r_1(P_i(k) - X_i(k)) + \phi_g r_2(P_g(k) - X_i(k))\]
+gdzie \(w\) oznacza współczynnik bezwładności, \(P_i\) położenie optimum lokalnego, \(P_g\) położenie optimum globalnego, współczynniki \(r_1\) i \(r_2\)
+losowane są z rozkładem \(U[0, 1]\), a \(\phi_p\) oraz \(\phi_g\) oznaczają kolejno parametryzowane współczynniki wagi - poznawczy i społeczny. Na podstawie powyższego wzoru obserwujemy,
+że wektor prędkości tworzony jest na podstawie trzech składowych, a współczynnik bezwładności określa wagę składowej będącej
+prędkością w poprzedniej iteracji. Im mniejsza wartość tego współczynnika, tym bardziej zwrotne i skłonne do eksploatacji są cząstki.
+Ze zwiększeniem wartości współczynnika bezwładności wiąże się natomiast większa skłonność do eksploracji przestrzeni, co może jednak skutkować "przestrzeliwaniem"\space
+optimów lokalnych.
+
+
+
+\section{Zastosowane rozwiązanie}
+
+Problem sformułowany w poprzedniej sekcji spróbujemy zniwelować poprzez wprowadzenie dynamicznej zmiany współczynnika bezwładności,
+uzależniając go od liczby wykonanych iteracji. Współczynnik będzie stopniowo zmniejszany się w miarę pracy algorytmu.
+Umożliwi to skupienie się na eksploracji w początkowej fazie algorytmu, a następnie bardziej precyzyjne
+zbieganie wokół optimów pod koniec pracy. W iteracji \(k\) wartość współczynnika bezwładności opisana jest wzorem
+\[w_{k} = w_{k-1}u^{-k}\]
+gdzie  \(u \in [1.001, 1.005]\) na podstawie literatury.
+
+\section{Sposób przeprowadzania badań, przyjęte założenia}
+
+Badania przeprowadzone zostały w ciągłej, ograniczonej wielowymiarowej przestrzeni z dobrze zdefiniowanymi wartościami funkcji celu w każdym punkcie.
+Zbadane zostało działanie algorytmu zarówno dla funkcji jedno-, jak i wielomodalnych. Początkowe pozycje cząstek generowane są zgodnie z rozkładem
+jednostajnym w granicach przestrzeni rozwiązań. Początkowa prędkość cząstek **TODO**. Ograniczenia przestrzeni zostały zrealizowane w wariancie lamarkowskim,
+przy pomocy rzutowania na ograniczenia w każdym wymiarze ograniczeń kostkowych.
+
+
+Algorytmy badaliśmy na następujących funkcjach:
+
+\begin{itemize}
+	\item \textbf{Funkcja sferyczna}  \[y(x) = \sum_{i = 0}^{d} x_i^2 \] unimodalna funkcja kwadratowa, trywialne
+	      zadanie optymalizacji
+
+	\item \textbf{Funkcja Rastrigina} \[f(x) = A d + \sum_{i=1}^{d} \left( x_i^2 - A \cos(2\pi x_i) \right)\]
+	      klasyczna wielomodalna
+	      funkcja stosowana do ewaluacji algorytmów optymalizacyjnych posiadająca wiele minimów lokalnych.
+	      Zastosowaliśmy klasyczny wariant z \(A = 10\).
+
+	\item \textbf{Funkcja Ackleya} \[f(x) = -a \exp \left( -b \sqrt{\frac{1}{d} \sum_{i=1}^{d} x_i^2} \right)
+		      - \exp \left( \frac{1}{d} \sum_{i=1}^{d} \cos(c x_i) \right) + a + \exp(1)\]
+	      Kolejna znana funkcja benchmarkowa, przyjęliśmy \(a = 20, b = 0.2, c = 2\pi\).
+\end{itemize}
+
+gdzie \(d\) to rozmiar przestrzeni. Wyniki były uśredniane z 50 uruchomień dla wymiarowości \(d \in \{5, 10, 20\}\).
+Rozwiązanie było oceniane względem dwóch kryteriów - wartości f. celu w znalezionym punkcie oraz szybkości
+zbieżności algorytmów - iteracji wymaganych do odnalezienia tego punktu.
+
+
+\subsection*{Wizualizacja trajektorii przestrzeni}
+Dla każdego przeprowadzonego badania przedstawiony będzie wykres wartości funkcji celu w \(P_g\) na przestrzeni iteracji.
+Ponadto zamierzamy zwizualizować trajektorię populacji w niskowymiarowej przestrzeni na wykresie poziomicowym.
+
+\section{Bibliografia}
+\begin{itemize}
+	\item{Particle swarm optimization. (1995). IEEE Conference Publication | IEEE Xplore. https://ieeexplore.ieee.org/document/488968}
+	\item{Jiao, B., Lian, Z., \& Gu, X. (2006). A dynamic inertia weight particle swarm optimization algorithm. Chaos Solitons \& Fractals, 37(3), 698–705. https://doi.org/ 10.1016/j.chaos.2006.09.063}
+\end{itemize}
+\end{document}
