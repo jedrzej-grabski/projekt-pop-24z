@@ -75,10 +75,37 @@ Rozwiązanie było oceniane względem dwóch kryteriów - wartości f. celu w zn
 zbieżności algorytmów - iteracji wymaganych do odnalezienia tego punktu.
 
 \subsection{Parametry algorytmu}
-We wszystkich przypadkach populacja liczyła 50 osobników. Przy każdym uruchomieniu $\phi_p = \phi_g = 2.0$. Początkowe pozycje cząstek generowane były zgodnie z rozkładem
-jednostajnym w granicach przestrzeni rozwiązań. Początkowa prędkość cząstek była generowana z rozkładem jednostajnym w zakresie
-$[-\frac{x_{max, j}-x_{min, j}}{2}, \frac{x_{max, j}-x_{min, j}}{2}]$ dla każdego wymiaru \(j\), gdzie $x_{max}$ i $x_{min}$ oznaczają odpowiednio
-górne i dolne ograniczenie w tym wymiarze.
+Ze względu na dużą liczbę parametrów, część z nich musiała zostać ustalona, aby posiadany przez nas sprzęt sprostał wymaganiom czasowym:
+
+\begin{itemize}
+	\item We wszystkich przypadkach populacja liczyła 50 osobników.
+	\item Przy każdym uruchomieniu $\phi_p = \phi_g = 2.0$.
+	\item Początkowe pozycje cząstek generowane były zgodnie z rozkładem jednostajnym w granicach przestrzeni rozwiązań.
+	\item Początkowa prędkość cząstek była generowana z rozkładem jednostajnym w zakresie $[-\frac{x_{max, j}-x_{min, j}}{2}, \frac{x_{max, j}-x_{min, j}}{2}]$ dla każdego wymiaru \(j\), gdzie $x_{max}$ i $x_{min}$ oznaczają odpowiednio
+	      górne i dolne ograniczenie w tym wymiarze.
+	\item Za każdym razem algorytmy były uruchamiane z maksymalną liczbą 300 iteracji oraz $eps = 1e-5$. Po znalezieniu
+	      punktu oddalonego o $eps$ od minimum globalnego, algorytmy kończyły działanie. \textbf{TODO}
+	\item Wartość współczynnika bezwładności lub, w przypadku dynamicznego współczynnika bezwładności $w = 0.1$
+\end{itemize}
+
+Początkowa wartość współczynnika bezwładności została wybrana eksperymentalnie przez zbadanie najlepszej wartości f. Rosenbrocka w 10 wymiarach w zależności od
+jego wartości. Wyniki znajdują się w tabeli \ref{tab:rosenbrock_values}.
+
+\begin{table}[h]
+	\centering
+	\label{tab:rosenbrock_values}
+	\begin{tabular}{c|c c c c c}
+		\hline
+		Dynamiczny współczynnik bezwładności / $\omega_0$ & 0.05 & 0.1 & 0.2 & 0.4 & 0.7  \\
+		\hline
+		Nie                                               & 36   & 34  & 47  & 62  & 1798 \\
+		Tak                                               & 30   & 29  & 40  & 60  & 1539 \\
+		\hline
+	\end{tabular}
+	\caption{Zaokrąglona wartość f. Rosenbrocka dla najlepszego znalezionego punktu w zależności od startowego współczynnika bezwładności}
+\end{table}
+
+Badanie było przeprowadzone dla różnych funkcji, jednak w innych wypadkach wyniki były do siebie znacznie bardziej zbliżone.
 
 \subsection*{Wizualizacja trajektorii przestrzeni}
 Dla każdego przeprowadzonego badania przedstawiony będzie wykres wartości funkcji celu w \(P_g\) na przestrzeni iteracji.
