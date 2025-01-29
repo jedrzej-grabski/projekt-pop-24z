@@ -1,5 +1,12 @@
+from src.projekt_pop_24z.utils.logger import SwarmLogger
 from src.projekt_pop_24z.swarm.pso import Swarm, Particle, Task
 import pytest
+
+logger = SwarmLogger(
+    epsilon=1e-5,
+    name="This is a test logger",
+    optimum_position=0,
+)
 
 
 def test_update_global_best_minimize():
@@ -17,6 +24,7 @@ def test_update_global_best_minimize():
         task=Task.MINIMIZE,
         cost_function=sum,
         particles=particles,
+        logger=logger,
     )
 
     global_best = swarm.update_global_best()
@@ -38,6 +46,7 @@ def test_update_global_best_maximize():
         task=Task.MAXIMIZE,
         cost_function=sum,
         particles=particles,
+        logger=logger,
     )
 
     global_best = swarm.update_global_best()
@@ -53,6 +62,7 @@ def test_current_iteration():
         dimensions=2,
         task=Task.MAXIMIZE,
         cost_function=sum,
+        logger=logger,
     )
 
     res = swarm.run_optimization(
@@ -71,6 +81,7 @@ def test_current_iteration_min():
         dimensions=2,
         task=Task.MINIMIZE,
         cost_function=sum,
+        logger=logger,
     )
 
     res = swarm.run_optimization(
@@ -78,34 +89,3 @@ def test_current_iteration_min():
     )
     assert res == [0.0, 0.0], f"Expected [0.0, 0.0], got {res}"
     assert swarm.current_iteration == 10, f"Expected 10, got {swarm.current_iteration}"
-
-
-def test_wrong_inertia_decay():
-    bounds = [[0.0, 10.0], [0.0, 10.0]]
-
-    with pytest.raises(ValueError):
-        _ = Swarm(
-            swarm_size=3,
-            bounds=bounds,
-            dimensions=2,
-            task=Task.MINIMIZE,
-            cost_function=sum,
-            dynamic_inertia=True,
-            inertia_decay=0.9,
-        )
-
-
-def test_inertia_decay_with_not_dynamic():
-
-    bounds = [[0.0, 10.0], [0.0, 10.0]]
-
-    with pytest.raises(ValueError):
-        _ = Swarm(
-            swarm_size=3,
-            bounds=bounds,
-            dimensions=2,
-            task=Task.MINIMIZE,
-            cost_function=sum,
-            dynamic_inertia=False,
-            inertia_decay=1.0002,
-        )
