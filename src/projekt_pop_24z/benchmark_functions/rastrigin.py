@@ -16,4 +16,3 @@ class Rastrigin(BenchmarkFunction):
     name: str = field(init=False, default="Rastrigin")
     optimum_value: float = field(init=False, default=0)  # Minimum value of the function
     function: Callable[[List[float]], float] = field(default=rastrigin_function)
-    dimensions: int = field(init=False, default=2)  # Defined for 2 dimensions
