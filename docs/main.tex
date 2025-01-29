@@ -4,6 +4,9 @@
 \usepackage{hyperref}
 \usepackage[ bottom=30mm, top=20mm, left=30mm, right=30mm]{geometry}
 \usepackage{placeins}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{../plots/used/}}
 
 \title{Przeszukiwanie i optymalizacja - dokumentacja końcowa}
 \author{Maksym Bieńkowski, Jędrzej Grabski}
@@ -95,7 +98,6 @@ jego wartości. Wyniki znajdują się w tabeli \ref{tab:test_rosenbrock}.
 
 \begin{table}[h]
 	\centering
-	\label{tab:test_rosenbrock}
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline
 		DI / $\omega_0$ & 0.05 & 0.1 & 0.2 & 0.4 & 0.7  \\
@@ -105,6 +107,7 @@ jego wartości. Wyniki znajdują się w tabeli \ref{tab:test_rosenbrock}.
 		\hline
 	\end{tabular}
 	\caption{Zaokrąglona wartość f. Rosenbrocka dla najlepszego znalezionego punktu w zależności od startowego współczynnika bezwładności}
+	\label{tab:test_rosenbrock}
 \end{table}
 
 
@@ -113,6 +116,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 
 
 \pagebreak
+\section{Wyniki badań}
 \subsection*{Porównanie ze względu na jakość rozwiązań}
 
 \begin{table}[h!]
@@ -125,7 +129,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 		Tak       & $6.93 \times 10^{-12}$ & 0.0243 & 2.2864 \\
 		\hline
 	\end{tabular}
-	\caption{Zaokrąglona wartość f. sferycznej dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\caption{Wartość f. sferycznej dla najlepszego znalezionego punktu w zależności od wymiaru}
 	\label{tab:sphere_values}
 \end{table}
 
@@ -139,7 +143,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 		Tak      & 2.516 & 33.790 & 414.403 \\
 		\hline
 	\end{tabular}
-	\caption{Zaokrąglona wartość f. Rosenbrocka dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\caption{Wartość f. Rosenbrocka dla najlepszego znalezionego punktu w zależności od wymiaru}
 	\label{tab:rosenbrock_values}
 \end{table}
 
@@ -153,7 +157,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 		Tak      & 7.697 & 19.518 & 46.823 \\
 		\hline
 	\end{tabular}
-	\caption{Zaokrąglona wartość f. Rastrigina dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\caption{Wartość f. Rastrigina dla najlepszego znalezionego punktu w zależności od wymiaru}
 	\label{tab:rastrigin_values}
 \end{table}
 
@@ -167,13 +171,119 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 		Tak      & 0.402 & 1.578 & 3.038 \\
 		\hline
 	\end{tabular}
-	\caption{Zaokrąglona wartość f. Ackleya dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\caption{Wartość f. Ackleya dla najlepszego znalezionego punktu w zależności od wymiaru}
 	\label{tab:ackley_values}
 \end{table}
 
-\subsection*{Wizualizacja trajektorii przestrzeni}
-Dla każdego przeprowadzonego badania przedstawiony będzie wykres wartości funkcji celu w \(P_g\) na przestrzeni iteracji.
-Ponadto zamierzamy zwizualizować trajektorię populacji w niskowymiarowej przestrzeni na wykresie poziomicowym.
+\subsection*{Porównanie ze względu na zbieżność}
+
+\subsection*{Zmiana najlepszego punktu na przestrzeni iteracji dla wybranych funkcji}
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Ackley_10d_10_True.png}
+		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. Ackleya, 10 wymiarów}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Ackley_10d_10_False.png}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Ackleya, 10 wymiarów}
+	\end{subfigure}
+	\caption{Porównanie tempa zbieżności algorytmu dla dynamicznej i statycznej inercji w 20 wymiarach dla 300 iteracji}
+	\label{20d_comp}
+\end{figure}
+
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Rastrigin_4d_4_True.png}
+		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. Rastrigina, 4 wymiary}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Rastrigin_4d_4_False.png}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Rastrigina, 4 wymiary}
+	\end{subfigure}
+	\caption{Porównanie tempa zbieżności algorytmu dla dynamicznej i statycznej inercji w 4 wymiarach dla 300 iteracji}
+	\label{4d_comp}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Sphere_2d_2_True.png}
+		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. sferyczna, 2 wymiary}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Sphere_2d_2_False.png}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. sferyczna, 2 wymiary}
+	\end{subfigure}
+	\caption{Porównanie tempa zbieżności algorytmu dla dynamicznej i statycznej inercji w 2 wymiarach dla 100 iteracji}
+	\label{2d_comp}
+\end{figure}
+
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Rastrigin_3d_3_True.png}
+		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. Rastrigina, 3 wymiary}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{global_best_Rastrigin_3d_3_False.png}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Rastrigina, 3 wymiary}
+	\end{subfigure}
+	\caption{Porównanie tempa zbieżności algorytmu dla dynamicznej i statycznej inercji w 3 wymiarach dla 300 iteracji}
+	\label{3d_comp}
+\end{figure}
+
+\pagebreak
+\FloatBarrier
+
+
+\subsection*{Wizualizacja punktów przed i po działaniu algorytmu}
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{start_end_Ackley_2d_2_True.png}
+		\caption{Uśrednione punkty startowe i końcowe - f. Ackleya, 2 wymiary, dynamiczna inercja}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{start_end_Ackley_2d_2_False.png}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Rastrigina, 3 wymiary}
+	\end{subfigure}
+	\caption{Uśrednione punkty startowe i końcowe - f. Ackleya, 2 wymiary, statyczna inercja}
+	\label{ackley_start_end}
+\end{figure}
+
+\subsection*{Wnioski}
+Na podstawie tabel \ref{tab:sphere_values}, \ref{tab:rosenbrock_values}, \ref{tab:rastrigin_values}, \ref{tab:ackley_values} możemy stwierdzić, że
+zastosowanie dynamicznego współczynnika bezwładności nie wydaje się negatywnie wpływać na jakość znajdowanych rozwiązań.
+
+Wykresy \ref{20d_comp} oraz \ref{4d_comp} wydają się pokazywać, że dla nastaw, które wydawały się optymalne, w większych wymiarowościach nie jest widoczne tak duże
+przyspieszenie zbieżności, jak możnaby się spodziewać. Nie wykluczamy, że jest to spowodowane konkretnymi przyjętymi parametrami algorytmu. Przeprowadziliśmy
+także badania dla mniejszej liczby iteracji, jednak wydaje się, że w większej wymiarowości poprawa nie jest odczuwalna. W analizowanej literaturze przyspieszenie
+wystąpiło wyłącznie dla niektórych funkcji benchmarkowych - być może obierając inne przypadki wyniki byłyby bardziej obiecujące.
+
+Przy doborze innych parametrów udało się nam zauważyć korzyści wynikające z zastosowania dynamicznego współczynnika bezwładności, w szczególności dla:
+\begin{itemize}
+	\item wysokiej bezwładności początkowej
+	\item niższego wymiaru problemu
+	\item niższej liczby możliwych iteracji
+	\item mniejszej populacji
+\end{itemize}
+
+Wobec tego, jeśli obliczenie funkcji celu jest kosztowne i możemy sobie pozwolić wyłącznie na niższą liczbę iteracji, istnieje korzyść z zastosowania tego rozwiązania.
+Ponadto, zgodnie z wykresem \ref{2d_comp}, dzięki gradualnemu obniżaniu bezwładności, algorytm ma mniejszą tendencję do przypadkowego błądzenia po przestrzeni rozwiązań i
+dokładniej eksploatuje znalezione minima. Porównanie \ref{3d_comp} pokazuje, że wersja z dynamiczną bezwładnością wydaje się mieć również tendencje do znajdywania podobnych
+rozwiązań dla gorszych punktów startowych. W wizualizacji \ref{ackley_start_end} obserwujemy, że przy zastosowaniu dynamicznej inercji punkty końcowe są gęściej skoncentrowane
+w optimum niż w przypadku bez inercji. Jest to spowodowane zwiększoną eksploatacją w końcowych fazach algorytmu.
 
 \section{Bibliografia}
 \begin{itemize}
