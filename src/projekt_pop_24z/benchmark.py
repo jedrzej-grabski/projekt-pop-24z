@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Callable
 from dataclasses import dataclass
 
@@ -32,6 +33,26 @@ class OptimizationResult:
     algorithm_parameters: AlgorithmParameters
     best_position: Coordinates
     best_cost: float
+
+    @classmethod
+    def aggregate(
+        cls, aggregated_logger: SwarmLogger, results: list[OptimizationResult]
+    ) -> OptimizationResult:
+        # Aggregate the results by averaging the best positions and costs
+        num_results = len(results)
+        best_positions = [
+            sum(result.best_position[i] for result in results) / num_results
+            for i in range(len(results[0].best_position))
+        ]
+
+        best_costs = sum(result.best_cost for result in results) / num_results
+
+        return cls(
+            logger=aggregated_logger,
+            algorithm_parameters=results[0].algorithm_parameters,
+            best_position=best_positions,
+            best_cost=best_costs,
+        )
 
 
 def run_single_benchmark(
@@ -104,6 +125,46 @@ def run_benchmark_and_plot(
                 plotter.plot_starting_and_ending_positions_two_dimensional()
 
     return result
+
+
+def run_benchmark_and_plot_aggregated(
+    cost_function: Callable[[Coordinates], float],
+    parameters: AlgorithmParameters,
+    log_params: LogParameters,
+    plot_description: PlotDescription,
+    plot_types: list[PlotType],
+    n_times: int,
+) -> OptimizationResult:
+    results: list[OptimizationResult] = []
+    loggers: list[SwarmLogger] = []
+
+    for _ in range(n_times):
+        result, logger = run_single_benchmark(cost_function, parameters, log_params)
+        loggers.append(logger)
+        results.append(result)
+
+    aggregated_logger = SwarmLogger.aggregate(loggers)
+    aggregated_result = OptimizationResult.aggregate(aggregated_logger, results)
+
+    plotter = Plotter(
+        logger=aggregated_logger,
+        plot_description=plot_description,
+        bounds=parameters.bounds,
+        func=cost_function,
+    )
+
+    for plot_type in plot_types:
+        match plot_type:
+            case PlotType.GLOBAL_BEST_COSTS:
+                plotter.plot_global_best_costs()
+            case PlotType.STARTING_AND_ENDING_POSITIONS:
+                if parameters.dimensions != 2:
+                    raise ValueError(
+                        "Starting and ending positions plot is only supported for 2D problems."
+                    )
+                plotter.plot_starting_and_ending_positions_two_dimensional()
+
+    return aggregated_result
 
 
 def pretty_print_result(result: OptimizationResult) -> None:
