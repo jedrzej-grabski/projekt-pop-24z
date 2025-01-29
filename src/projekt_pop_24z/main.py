@@ -1,32 +1,57 @@
-from pathlib import Path
-from src.projekt_pop_24z.benchmark import run_single_benchmark, AlgorithmParameters
-from src.projekt_pop_24z.benchmark_functions.sphere import sphere_function
-from projekt_pop_24z.swarm.pso import Task
+from projekt_pop_24z.utils.plotter import PlotDescription
+from src.projekt_pop_24z.benchmark import (
+    run_benchmark_and_plot,
+    pretty_print_result,
+    AlgorithmParameters,
+    LogParameters,
+)
+from src.projekt_pop_24z.benchmark_functions.sphere import Sphere
+from src.projekt_pop_24z.swarm.pso import Task
+from src.projekt_pop_24z.utils.plotter import PlotType
 
-if __name__ == "__main__":
-    dim = 5
-    bounds_5d = [[-5.0, 5.0] for _ in range(dim)]
 
-    parameters_5d = AlgorithmParameters(
-        swarm_size=40,
-        bounds=bounds_5d,
-        dimensions=dim,
+EPSILON = 0.001
+OPTIMUM = Sphere.optimum_value
+NAME = "Sphere"
+
+DYNAMIC_INERTIA = True
+
+DIMENSIONS = 2
+
+SAVE_PATH = "sphere.png"
+
+
+def main():
+
+    bounds = [[-2.0, 2.0] for _ in range(DIMENSIONS)]
+
+    parameters = AlgorithmParameters(
+        swarm_size=200,
+        bounds=bounds,
+        dimensions=DIMENSIONS,
         task=Task.MINIMIZE,
-        iterations=100,
-        initial_inertia=0.7,
+        iterations=10,
+        initial_inertia=0.4,
         cognitive_constant=2.0,
         social_constant=2.0,
     )
 
-    result = run_single_benchmark(
-        "Sphere function in 5 dimensions",
-        sphere_function,
-        parameters_5d,
-        logging=True,
-        save_plot=True,
-        save_path=Path("sphere_5d.png"),
+    log_params = LogParameters(
+        epsilon=EPSILON,
+        name=NAME,
+        optimum_value=OPTIMUM,
     )
 
-    print(
-        f"Best position: {[round(pos, 5) for pos in result.best_position]}\nBest cost: {round(result.best_cost, 5)}"
+    result = run_benchmark_and_plot(
+        cost_function=Sphere.function,
+        parameters=parameters,
+        log_params=log_params,
+        plot_description=PlotDescription(problem_name=NAME, save_path=SAVE_PATH),
+        plot_types=[PlotType.GLOBAL_BEST_COSTS, PlotType.STARTING_AND_ENDING_POSITIONS],
     )
+
+    pretty_print_result(result)
+
+
+if __name__ == "__main__":
+    main()
