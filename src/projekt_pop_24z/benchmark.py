@@ -177,7 +177,7 @@ def pretty_print_result(result: OptimizationResult) -> None:
     param_table: list[list[object]] = [
         ["Swarm Size", params.swarm_size],
         ["Dimensions", params.dimensions],
-        ["Bounds", params.bounds],
+        ["Bounds for all dimensions", params.bounds[0]],
         ["Task", params.task.name],
         ["Iterations", params.iterations],
         ["Initial Inertia", params.initial_inertia],

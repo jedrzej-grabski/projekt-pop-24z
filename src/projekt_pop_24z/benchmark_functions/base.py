@@ -7,4 +7,3 @@ class BenchmarkFunction:
     name: str
     function: Callable[[List[float]], float]
     optimum_value: float = 0
-    dimensions: int = 0

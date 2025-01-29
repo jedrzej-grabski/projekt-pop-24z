@@ -1,5 +1,5 @@
 from dataclasses import field, dataclass
-from projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
+from src.projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
 from typing import Callable, List
 import math
 
@@ -16,4 +16,3 @@ class Rastrigin(BenchmarkFunction):
     name: str = field(init=False, default="Rastrigin")
     optimum_value: float = field(init=False, default=0)  # Minimum value of the function
     function: Callable[[List[float]], float] = field(default=rastrigin_function)
-    dimensions: int = field(init=False, default=2)  # Defined for 2 dimensions

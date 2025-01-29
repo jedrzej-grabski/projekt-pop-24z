@@ -166,3 +166,6 @@ cython_debug/
 #.idea/
 indent.log
 docs/build
+docs/pop24z-raport-srodsem.pdf
+docs/particle-swarm-optimization.pdf
+docs/j.chaos.2006.09.063.pdf

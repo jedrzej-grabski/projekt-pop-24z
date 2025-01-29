@@ -1,5 +1,5 @@
 from dataclasses import field, dataclass
-from projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
+from src.projekt_pop_24z.benchmark_functions.base import BenchmarkFunction
 from typing import Callable, List
 
 
@@ -17,4 +17,3 @@ class Rosenbrock(BenchmarkFunction):
     name: str = field(init=False, default="Rosenbrock")
     optimum_value: float = field(init=False, default=0)
     function: Callable[[List[float]], float] = field(default=rosenbrock_function)
-    dimensions: int = field(init=False, default=2)  # Example for 2 dimensions
