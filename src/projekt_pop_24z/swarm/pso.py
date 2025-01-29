@@ -218,6 +218,7 @@ class Swarm:
     def _update_particle_position(self, particle: Particle) -> None:
         """Update particle's position based on its velocity, respecting bounds."""
         for d in range(self.dimensions):
+            # TODO: simplify conditionals
 
             particle.position[d] += particle.velocity[d]
 
