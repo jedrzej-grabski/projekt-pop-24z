@@ -70,7 +70,7 @@ Algorytmy badaliśmy na następujących funkcjach:
 	      $f(x^*) = 0$ dla $x^*=0$.
 
 	\item \textbf{Funkcja Rosenbrocka} \[f(x) = \sum_{i=1}^{d-1} \left[ 100 (x_{i+1} - x_i^2)^2 + (x_i - 1)^2 \right]\]
-	      Liczba optimów funkcji zależy od wymiarowości - dla \(d <= 3\) posiada ona jedno minimum globalne $f(x^*) = 0$ dla $x^* = 1$. **TODO**
+	      Liczba optimów funkcji zależy od wymiarowości - dla \(d <= 3\) posiada ona jedno minimum globalne $f(x^*) = 0$ dla $x^* = 1$.
 	      Charakteryzuje się płaską, wykrzywioną doliną, dotarcie do optimum wymaga precyzyjnej nawigacji i bywa kosztowne czasowo.
 \end{itemize}
 
@@ -87,8 +87,10 @@ Ze względu na dużą liczbę parametrów, część z nich musiała zostać usta
 	\item Początkowe pozycje cząstek generowane były zgodnie z rozkładem jednostajnym w granicach przestrzeni rozwiązań.
 	\item Początkowa prędkość cząstek była generowana z rozkładem jednostajnym w zakresie $[-\frac{x_{max, j}-x_{min, j}}{2}, \frac{x_{max, j}-x_{min, j}}{2}]$ dla każdego wymiaru \(j\), gdzie $x_{max}$ i $x_{min}$ oznaczają odpowiednio
 	      górne i dolne ograniczenie w tym wymiarze.
-	\item Za każdym razem algorytmy były uruchamiane z maksymalną liczbą 300 iteracji oraz $eps = 1e-5$. Po znalezieniu
-	      punktu oddalonego o $eps$ od minimum globalnego, algorytmy kończyły działanie. \textbf{TODO}
+	\item Za każdym razem algorytmy były uruchamiane z maksymalną liczbą 300 iteracji oraz $eps = 1e-5$. Algorytm zapamiętuje,
+	      w której iteracji dotarł do epsilona, co pozwala zmierzyć zbieżność do punktu o określonej jakości. W praktyce tak niska
+	      wartość okazała się oczywiście zbyt niska dla wielowymiarowych funkcji i wymagałaby indywidualnego arbitralnego strojenia
+	      w zależności od funkcji i wymiaru, brana była pod uwagę przy badaniu \ref{convergence_table}.
 	\item Wartość współczynnika bezwładności lub, w przypadku dynamicznego współczynnika bezwładności $w = 0.1$
 	\item Wartość współczynnika $u$ używanego do obniżania wartości bezwładności $u = 1.0001$
 \end{itemize}
@@ -123,10 +125,10 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		DI  / Dim & 5                      & 10     & 20     \\
+		DI  / Dim & 5             & 10     & 20     \\
 		\hline
-		Nie       & $8.90 \times 10^{-12}$ & 0.0184 & 2.2144 \\
-		Tak       & $6.93 \times 10^{-12}$ & 0.0243 & 2.2864 \\
+		Nie       & $8.90e^{-12}$ & 0.0184 & 2.2144 \\
+		Tak       & $6.93e^{-12}$ & 0.0243 & 2.2864 \\
 		\hline
 	\end{tabular}
 	\caption{Wartość f. sferycznej dla najlepszego znalezionego punktu w zależności od wymiaru}
@@ -175,7 +177,24 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\label{tab:ackley_values}
 \end{table}
 
+\pagebreak
 \subsection*{Porównanie ze względu na zbieżność}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		DI / Funkcja & Sferyczna & Ackley & Rosenbrock & Rastrigin \\
+		\hline
+		Nie          & 37        & 57     & NA         & NA        \\
+		Tak          & 27        & 243    & NA         & NA        \\
+		\hline
+	\end{tabular}
+	\caption{Uśrednione iteracje do znalezienia $eps$, 2 wymiary}
+	\label{convergence_table}
+\end{table}
+
+\FloatBarrier
 
 \subsection*{Zmiana najlepszego punktu na przestrzeni iteracji dla wybranych funkcji}
 
@@ -256,7 +275,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\hfill
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{start_end_Ackley_2d_2_False.png}
-		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Rastrigina, 3 wymiary}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Rastrigina, 2 wymiary}
 	\end{subfigure}
 	\caption{Uśrednione punkty startowe i końcowe - f. Ackleya, 2 wymiary, statyczna inercja}
 	\label{ackley_start_end}
@@ -283,7 +302,11 @@ Wobec tego, jeśli obliczenie funkcji celu jest kosztowne i możemy sobie pozwol
 Ponadto, zgodnie z wykresem \ref{2d_comp}, dzięki gradualnemu obniżaniu bezwładności, algorytm ma mniejszą tendencję do przypadkowego błądzenia po przestrzeni rozwiązań i
 dokładniej eksploatuje znalezione minima. Porównanie \ref{3d_comp} pokazuje, że wersja z dynamiczną bezwładnością wydaje się mieć również tendencje do znajdywania podobnych
 rozwiązań dla gorszych punktów startowych. W wizualizacji \ref{ackley_start_end} obserwujemy, że przy zastosowaniu dynamicznej inercji punkty końcowe są gęściej skoncentrowane
-w optimum niż w przypadku bez inercji. Jest to spowodowane zwiększoną eksploatacją w końcowych fazach algorytmu.
+w optimum niż w przypadku bez inercji. Jest to spowodowane zwiększoną eksploatacją w końcowych fazach algorytmu. Dla niższej wymiarowości i odpowiednich parametrów, algorytm znajdował
+odpowiednio dobre punkty szybciej, co zobrazowane zostało w tabeli \ref{convergence_table}.
+
+W kwestii porównania zachowań algorytmu w zależności od funkcji, najtrudniejszym zadaniem wydaje się funkcja Rastrigina. Dla wyższych wymiarowości niż 4 nie znajdował on
+konsekwentnie optimum globalnego i cechował się tendencją do utykania w napotkanych optimach lokalnych, co także obrazuje porównanie \ref{3d_comp}.
 
 \section{Bibliografia}
 \begin{itemize}
