@@ -299,6 +299,7 @@ Przy doborze innych parametrów udało się nam zauważyć korzyści wynikające
 \end{itemize}
 
 Wobec tego, jeśli obliczenie funkcji celu jest kosztowne i możemy sobie pozwolić wyłącznie na niższą liczbę iteracji, istnieje korzyść z zastosowania tego rozwiązania.
+Z pewnością nie wydaje się ono degenerować jakości wyników algorytmu, nawet w wyższych wymiarach, a aktualizacja wagi jest praktycznie darmowa w kwestii wymaganych obliczeń.
 Ponadto, zgodnie z wykresem \ref{2d_comp}, dzięki gradualnemu obniżaniu bezwładności, algorytm ma mniejszą tendencję do przypadkowego błądzenia po przestrzeni rozwiązań i
 dokładniej eksploatuje znalezione minima. Porównanie \ref{3d_comp} pokazuje, że wersja z dynamiczną bezwładnością wydaje się mieć również tendencje do znajdywania podobnych
 rozwiązań dla gorszych punktów startowych. W wizualizacji \ref{ackley_start_end} obserwujemy, że przy zastosowaniu dynamicznej inercji punkty końcowe są gęściej skoncentrowane
