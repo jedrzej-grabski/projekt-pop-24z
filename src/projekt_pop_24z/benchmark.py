@@ -5,7 +5,13 @@ from dataclasses import dataclass
 from tabulate import tabulate
 
 from src.projekt_pop_24z.utils.logger import LogParameters
-from src.projekt_pop_24z.swarm.pso import Task, Swarm, SwarmLogger
+from src.projekt_pop_24z.swarm.pso import (
+    Task,
+    Swarm,
+    SwarmLogger,
+    DynamicInertiaType,
+    InertiaParams,
+)
 from src.projekt_pop_24z.utils.plotter import PlotDescription, Plotter, PlotType
 
 
@@ -23,8 +29,8 @@ class AlgorithmParameters:
     initial_inertia: float
     cognitive_constant: float
     social_constant: float
-    dynamic_inertia: bool = False
-    inertia_decay: float = 0
+    dynamic_inertia: DynamicInertiaType
+    inertia_params: InertiaParams
 
 
 @dataclass
@@ -75,7 +81,7 @@ def run_single_benchmark(
         cost_function=cost_function,
         logger=logger,
         dynamic_inertia=parameters.dynamic_inertia,
-        inertia_decay=parameters.inertia_decay,
+        inertia_params=parameters.inertia_params,
     )
 
     swarm.init_swarm()
@@ -187,7 +193,7 @@ def pretty_print_result(result: OptimizationResult) -> None:
     ]
 
     if params.dynamic_inertia:
-        param_table.append(["Inertia Decay", params.inertia_decay])
+        param_table.append(["Inertia Decay", params.inertia_params.inertia_decay])
 
     print("\nAlgorithm Parameters:")
     print(tabulate(param_table, headers=["Parameter", "Value"], tablefmt="grid"))

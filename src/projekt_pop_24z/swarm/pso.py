@@ -1,9 +1,8 @@
 from dataclasses import dataclass, field
-import math
 from typing import Callable
 import random
 import enum
-
+import math
 
 from src.projekt_pop_24z.utils.logger import SwarmLogger
 
@@ -76,6 +75,19 @@ class Task(enum.Enum):
     MAXIMIZE = enum.auto()
 
 
+class DynamicInertiaType(enum.Enum):
+    LINEAR = enum.auto()
+    EXPONENTIAL = enum.auto()
+    ADAPTIVE = enum.auto()
+    NONE = enum.auto()
+
+
+@dataclass
+class InertiaParams:
+    inertia_decay: float
+    min_inertia: float
+
+
 @dataclass
 class Swarm:
     swarm_size: int
@@ -84,15 +96,18 @@ class Swarm:
     task: Task
     cost_function: Callable[[Coordinates], float]
     logger: SwarmLogger
+    inertia_params: InertiaParams
     particles: list[Particle] = field(default_factory=list)
     global_best_position: Coordinates = field(default_factory=list)
-    dynamic_inertia: bool = False
-    inertia_decay: float = 0
+    dynamic_inertia: DynamicInertiaType = DynamicInertiaType.NONE
     current_iteration: int = field(init=False, default=0)
 
     def __post_init__(self):
 
-        if not (1.0001 <= self.inertia_decay <= 1.005) and self.dynamic_inertia:
+        if (
+            not (1.0001 <= self.inertia_params.inertia_decay <= 1.005)
+            and self.dynamic_inertia is DynamicInertiaType.EXPONENTIAL
+        ):
             raise ValueError("Inertia decay should be in the range [1.0001, 1.005].")
 
     def init_swarm(self) -> None:
@@ -102,7 +117,7 @@ class Swarm:
             self.particles.append(particle)
         self.global_best_position = self.particles[0].position
 
-    def update_global_best(self) -> Coordinates:
+    def update_global_best(self) -> tuple[Coordinates, bool]:
         """Find the global best position based on the particles' personal bests and the defined task.
 
         Returns:
@@ -114,10 +129,19 @@ class Swarm:
         best_particle = comparison_fn(
             self.particles, key=lambda p: self.cost_function(p.personal_best_position)
         )
+        # Check if the global best position changed
+        if self.cost_function(
+            best_particle.personal_best_position
+        ) > self.cost_function(self.global_best_position):
+            new_best = True
+        else:
+            new_best = False
 
-        return best_particle.personal_best_position[:]
+        return best_particle.personal_best_position[:], new_best
 
-    def update_inertia(self, initial_inertia: float) -> float:
+    def update_inertia(
+        self, current_inertia: float, iterations: int, new_best: bool
+    ) -> float:
         """Update the inertia coefficient based on the current iteration.
 
         The inertia coefficient is updated using the following formula:
@@ -129,10 +153,26 @@ class Swarm:
         Returns:
             float: Updated inertia coefficient.
         """
+        match self.dynamic_inertia:
+            case DynamicInertiaType.LINEAR:
+                new_inertia = (
+                    current_inertia
+                    - (self.max_inertia - self.inertia_params.min_inertia) / iterations
+                )
 
-        new_inertia = initial_inertia * math.pow(
-            self.inertia_decay, -self.current_iteration
-        )
+            case DynamicInertiaType.EXPONENTIAL:
+                new_inertia = current_inertia * math.pow(
+                    self.inertia_params.inertia_decay, -self.current_iteration
+                )
+
+            case DynamicInertiaType.ADAPTIVE:
+                if new_best:
+                    new_inertia = current_inertia * 0.95
+                else:
+                    new_inertia = current_inertia * 1.01
+
+            case DynamicInertiaType.NONE:
+                new_inertia = current_inertia
 
         return new_inertia
 
@@ -154,6 +194,9 @@ class Swarm:
         Returns:
             Coordinates: The best solution found by the swarm.
         """
+        self.max_inertia = initial_inertia
+
+        new_best = False
 
         w = initial_inertia
         self.logger.add_inertia(w)
@@ -163,14 +206,18 @@ class Swarm:
 
         self.logger.add_particle_epoch([p.position for p in self.particles])
 
-        self.global_best_position = self.update_global_best()
+        self.global_best_position, new_best = self.update_global_best()
 
         initial_cost = self.cost_function(self.global_best_position)
         self.logger.log_global_best_cost(initial_cost)
 
         for _ in range(iterations):
 
-            w = self.update_inertia(w) if self.dynamic_inertia else w
+            w = (
+                self.update_inertia(w, iterations, new_best)
+                if self.dynamic_inertia
+                else w
+            )
 
             for particle in self.particles:
 
@@ -195,7 +242,7 @@ class Swarm:
                 if better_condition:
                     particle.personal_best_position = particle.position[:]
 
-            self.global_best_position = self.update_global_best()
+            self.global_best_position, new_best = self.update_global_best()
 
             self.logger.log_global_best_cost(
                 self.cost_function(self.global_best_position)
