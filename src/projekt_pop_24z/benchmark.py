@@ -15,7 +15,7 @@ from src.projekt_pop_24z.swarm.pso import (
 from src.projekt_pop_24z.utils.plotter import PlotDescription, Plotter, PlotType
 
 
-Bounds = list[list[float]]
+Bounds = list[tuple[float, float]]
 Coordinates = list[float]
 
 

@@ -14,6 +14,7 @@ class CEC2014_F1(BenchmarkFunction):
     name: str = field(init=False, default="CEC2014_F1")
     optimum_value: float = field(init=False, default=F12014().f_global)
     function: Callable[[List[float]], float] = field(default=function_2014_F1)
+    bounds = (-100, 100)
 
 
 def function_2017_F1(position: List[float]) -> float:
@@ -25,3 +26,4 @@ class CEC2017_F1(BenchmarkFunction):
     name: str = field(init=False, default="CEC2017_F1")
     optimum_value: float = field(init=False, default=F12017().f_global)
     function: Callable[[List[float]], float] = field(default=function_2017_F1)
+    bounds = (-100, 100)

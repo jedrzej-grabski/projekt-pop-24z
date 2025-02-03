@@ -1,3 +1,4 @@
+from opfunu.cec_based.cec2014 import F102014
 from projekt_pop_24z.utils.plotter import PlotDescription
 from src.projekt_pop_24z.benchmark import (
     pretty_print_result,
@@ -31,7 +32,6 @@ INERTIA_PARAMS = InertiaParams(inertia_decay=INERTIA_DECAY, min_inertia=0.2)
 SAVE_PATH = FUNCTION.name + ".png"
 SOCIAL_CONSTANT = 2.0
 COGNITIVE_CONSTANT = 2.0
-BOUNDS = [[-2.048, 2.048] for _ in range(DIMENSIONS)]
 TASK = Task.MINIMIZE
 ITERATIONS = 3000
 SWARM_SIZE = 100
@@ -39,11 +39,9 @@ SWARM_SIZE = 100
 
 def main():
 
-    bounds = [[-100.0, 100.0] for _ in range(DIMENSIONS)]
-
     parameters = AlgorithmParameters(
         swarm_size=SWARM_SIZE,
-        bounds=bounds,
+        bounds=[FUNCTION.bounds for _ in range(DIMENSIONS)],
         dimensions=DIMENSIONS,
         task=Task.MINIMIZE,
         iterations=ITERATIONS,

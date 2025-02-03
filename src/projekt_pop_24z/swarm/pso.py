@@ -8,7 +8,7 @@ from src.projekt_pop_24z.utils.logger import SwarmLogger
 
 
 Coordinates = list[float]
-Bounds = list[Coordinates]
+Bounds = tuple[Coordinates]
 
 
 @dataclass
