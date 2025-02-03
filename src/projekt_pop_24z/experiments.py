@@ -69,7 +69,7 @@ def main():
         elapsed_time = time.time() - start_time
         logger.info(
             f"Running experiment {n_experiment}/{ALL_EXPERIMENTS} ({percent_complete}%) "
-            f"on function {func.name} in {dim} dimensions. Time elapsed: {elapsed_time:.2f}s"
+            f"on function {func.name} in {dim} dimensions. Inertia setting: {itype}. Time elapsed: {elapsed_time:.2f}s"
         )
 
         iters = 500
