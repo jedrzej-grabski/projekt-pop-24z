@@ -2,10 +2,11 @@
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
 \usepackage{hyperref}
-\usepackage[ bottom=30mm, top=20mm, left=30mm, right=30mm]{geometry}
+\usepackage[ bottom=30mm, top=20mm, left=25mm, right=25mm]{geometry}
 \usepackage{placeins}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{amsmath}
 \graphicspath{{../plots/used/}}
 
 \title{Przeszukiwanie i optymalizacja - dokumentacja końcowa}
@@ -44,6 +45,27 @@ Umożliwi to skupienie się na eksploracji w początkowej fazie algorytmu, a nas
 zbieganie wokół optimów pod koniec pracy. W iteracji \(k\) wartość współczynnika bezwładności opisana jest wzorem
 \[w_{k} = w_{k-1}u^{-k}\]
 gdzie  \(u \in [1.001, 1.005]\) na podstawie literatury.
+
+\begin{center}
+	\rule{0.8\linewidth}{0.4pt}
+\end{center}
+
+Po konsultacji z prowadzącym, proponujemy dwa dodatkowe sposoby modyfikacji czynnika bezwładności.
+\begin{itemize}
+	\item Liniowe zmniejszanie wraz z liczbą iteracji - co iterację wartość współczynnika zmniejszana
+	      jest o stałą wartość równą $\frac{w_{max} - w_{min}}{n}$, gdzie n oznacza całkowitą liczbę iteracji
+	      przydzieloną algorytmowi, a $w_{max}$ i $w_{min}$ oznaczają kolejno startową i końcową wartość współczynnika.
+	\item Adaptacyjna zmiana współczynnika - jeśli w danej iteracji wartość globalnego optimum została zaktualizowana, wartość współczynnika
+	      jest odpowiednio zmniejszana, aby wspierać eksploatację znalezionego rozwiązania. W przeciwnym wypadku jest ona podwyższana:
+	      \[
+		      w_{k+1} =
+		      \begin{cases}
+			      1.01w_{k}, & \text{jeśli } gbest_{k+1} = gbest_{k}    \\
+			      0.95w_{k}, & \text{jeśli } gbest_{k+1} \neq gbest_{k}
+		      \end{cases}
+	      \]
+	      Wartości $1.01$ oraz $0.95$ zostały dobrane eksperymentalnie.
+\end{itemize}
 
 \section{Sposób przeprowadzania badań, przyjęte założenia}
 
@@ -121,7 +143,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 \section{Wyniki badań}
 \subsection*{Porównanie ze względu na jakość rozwiązań}
 
-\begin{table}[h!]
+\begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
@@ -135,7 +157,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\label{tab:sphere_values}
 \end{table}
 
-\begin{table}[h!]
+\begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
@@ -149,7 +171,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\label{tab:rosenbrock_values}
 \end{table}
 
-\begin{table}[h!]
+\begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
@@ -163,7 +185,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\label{tab:rastrigin_values}
 \end{table}
 
-\begin{table}[h!]
+\begin{table}[ht]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
@@ -198,7 +220,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 
 \subsection*{Zmiana najlepszego punktu na przestrzeni iteracji dla wybranych funkcji}
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{global_best_Ackley_10d_10_True.png}
@@ -214,7 +236,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{global_best_Rastrigin_4d_4_True.png}
@@ -229,7 +251,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\label{4d_comp}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{global_best_Sphere_2d_2_True.png}
@@ -245,7 +267,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 \end{figure}
 
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{global_best_Rastrigin_3d_3_True.png}
