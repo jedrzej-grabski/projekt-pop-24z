@@ -1,4 +1,4 @@
-# type: ignore
+import os
 from pathlib import Path
 from typing import Optional, Callable, List
 import matplotlib.pyplot as plt
@@ -127,7 +127,11 @@ class Plotter:
         ax.set_title(f"Global Best Costs - {self.plot_description.problem_name}")
         ax.legend()
 
+        full_path = f"plots/global_best/{self.plot_description.save_path}.png"
+        # create the subdirectories if they're not present
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+
         # Save the plot
-        plt.savefig("plots/global_best_" + self.plot_description.save_path)
+        plt.savefig(full_path)
 
         plt.clf()
