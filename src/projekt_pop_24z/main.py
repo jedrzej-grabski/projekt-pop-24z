@@ -11,6 +11,7 @@ from src.projekt_pop_24z.benchmark_functions.repository import (
     Sphere,
     Rosenbrock,
     Rastrigin,
+    CEC2014_F1,
 )
 from src.projekt_pop_24z.swarm.pso import Task, InertiaParams, DynamicInertiaType
 from src.projekt_pop_24z.utils.plotter import PlotType
@@ -69,19 +70,6 @@ def main():
     #     plot_types=[PlotType.GLOBAL_BEST_COSTS, PlotType.STARTING_AND_ENDING_POSITIONS],
     #     n_times=30,
     # )
-
-    result, logger = run_single_benchmark(
-        cost_function=FUNCTION.function,
-        parameters=parameters,
-        log_params=log_params,
-    )
-
-    # print(f"{result.best_cost:.4f}")
-    # for inert in logger.inertia_history:
-    #     print(f"{inert:.4f}")
-
-    pretty_print_result(result)
-    print(logger.inertia_history[-1])
 
 
 if __name__ == "__main__":
