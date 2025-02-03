@@ -63,6 +63,10 @@ def main():
     results = []
     start_time = time.time()
 
+    result_path = "results_iterative.txt"
+    with open(result_path, "w"):
+        pass  # clear the file on every launch
+
     for (func, dim), (itype, inertia_param) in all_params:
         n_experiment += 1
         percent_complete = round(n_experiment / ALL_EXPERIMENTS, 2) * 100
@@ -106,12 +110,15 @@ def main():
             plot_types=[PlotType.GLOBAL_BEST_COSTS],
             n_times=25 if func not in (CEC2017_F1, CEC2014_F1) else 10,
         )
+        with open(result_path, "a") as f:
+            pretty_print_result(result, f)
+
         results.append(result)
         save_results(results)
 
 
 def save_results(results: list[OptimizationResult]):
-    with open("results.txt", "w") as f:
+    with open("results_full.txt", "w") as f:
         for result in results:
             pretty_print_result(result, f)
 
