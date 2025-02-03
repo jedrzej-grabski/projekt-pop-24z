@@ -50,10 +50,10 @@ gdzie  \(u \in [1.001, 1.005]\) na podstawie literatury.
 	\rule{0.8\linewidth}{0.4pt}
 \end{center}
 
-Po konsultacji z prowadzącym, proponujemy dwa dodatkowe sposoby modyfikacji czynnika bezwładności.
+Po konsultacji z Prowadzącym, proponujemy dwa dodatkowe sposoby modyfikacji czynnika bezwładności.
 \begin{itemize}
 	\item Liniowe zmniejszanie wraz z liczbą iteracji - co iterację wartość współczynnika zmniejszana
-	      jest o stałą wartość równą $\frac{w_{max} - w_{min}}{n}$, gdzie n oznacza całkowitą liczbę iteracji
+	      jest o stałą wartość równą $\frac{w_{max} - w_{min}}{n}$, gdzie $n$ oznacza całkowitą liczbę iteracji
 	      przydzieloną algorytmowi, a $w_{max}$ i $w_{min}$ oznaczają kolejno startową i końcową wartość współczynnika.
 	\item Adaptacyjna zmiana współczynnika - jeśli w danej iteracji wartość globalnego optimum została zaktualizowana, wartość współczynnika
 	      jest odpowiednio zmniejszana, aby wspierać eksploatację znalezionego rozwiązania. W przeciwnym wypadku jest ona podwyższana:
@@ -71,7 +71,8 @@ Po konsultacji z prowadzącym, proponujemy dwa dodatkowe sposoby modyfikacji czy
 
 Badania przeprowadzone zostały w ciągłej, ograniczonej wielowymiarowej przestrzeni z dobrze zdefiniowanymi wartościami funkcji celu w każdym punkcie.
 Zbadane zostało działanie algorytmu zarówno dla funkcji jedno-, jak i wielomodalnych.Ograniczenia przestrzeni zostały zrealizowane w wariancie lamarkowskim,
-przy pomocy rzutowania na ograniczenia w każdym wymiarze ograniczeń kostkowych. Ustaliliśmy klasyczne ograniczenia $[-2.048, 2.048]$ dla każdego wymiaru.
+przy pomocy rzutowania na ograniczenia w każdym wymiarze ograniczeń kostkowych. Ustaliliśmy klasyczne ograniczenia $[-2.048, 2.048]^d$ dla każdego wymiaru w przypadku
+funkcji spoza benchmarku CEC, dla których ograniczenia wynoszą $[-100. 100]^d$.
 
 
 Algorytmy badaliśmy na następujących funkcjach:
@@ -96,9 +97,28 @@ Algorytmy badaliśmy na następujących funkcjach:
 	      Charakteryzuje się płaską, wykrzywioną doliną, dotarcie do optimum wymaga precyzyjnej nawigacji i bywa kosztowne czasowo.
 \end{itemize}
 
+\begin{center}
+	\rule{0.8\linewidth}{0.4pt}
+\end{center}
+
+Po konsultacji z Prowadzącym, badania zostały przeprowadzone także na następujących unimodalnych funkcjach z benchmarków CEC:
+
+\begin{itemize}
+
+	\item \textbf{CEC 2014 F1 (Rotated high conditioned elliptic function)}
+	      Optimum globalne $f(x^*) = 100$
+
+	\item \textbf{CEC 2017 F1 (Shifted and rotated Bent Cigar Function)}
+	      Optimum globalne $f(x^*) = 100$
+
+\end{itemize}
+
 W powyższych równaniach \(d\) oznacza rozmiar przestrzeni. Wyniki były uśredniane z 50 uruchomień dla wymiarowości \(d \in \{5, 10, 20\}\).
 Rozwiązanie było oceniane względem dwóch kryteriów - wartości f. celu w znalezionym punkcie oraz szybkości
 zbieżności algorytmów - iteracji wymaganych do odnalezienia tego punktu.
+
+Implementacje wybranych funkcji CEC z biblioteki \href{https://github.com/thieu1995/opfunu}{opfunu} uruchamialne
+były tylko dla $d \in \{ 10, 20, 30, 50, 100 \}$. Badania na nich zostały przeprowadzone dla $d \in \{ 10, 20 \}$.
 
 \subsection{Parametry algorytmu}
 Ze względu na dużą liczbę parametrów, część z nich musiała zostać ustalona, aby posiadany przez nas sprzęt sprostał wymaganiom czasowym:
