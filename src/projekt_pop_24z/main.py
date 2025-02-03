@@ -18,11 +18,11 @@ from src.projekt_pop_24z.utils.plotter import PlotType
 
 
 # variables
-DIMENSIONS = 2
-FUNCTION = Sphere
-DYNAMIC_INERTIA = DynamicInertiaType.ADAPTIVE
-INERTIA_DECAY = 1.0001
-INITIAL_INERTIA = 0.5
+DIMENSIONS = 10
+FUNCTION = CEC2014_F1
+DYNAMIC_INERTIA = DynamicInertiaType.NONE
+INERTIA_DECAY = 1.005
+INITIAL_INERTIA = 0.6
 EPSILON = 10e-5
 
 INERTIA_PARAMS = InertiaParams(inertia_decay=INERTIA_DECAY, min_inertia=0.2)
@@ -33,21 +33,21 @@ SOCIAL_CONSTANT = 2.0
 COGNITIVE_CONSTANT = 2.0
 BOUNDS = [[-2.048, 2.048] for _ in range(DIMENSIONS)]
 TASK = Task.MINIMIZE
-ITERATIONS = 10000
-SWARM_SIZE = 50
+ITERATIONS = 3000
+SWARM_SIZE = 100
 
 
 def main():
 
-    bounds = [[-2.048, 2.048] for _ in range(DIMENSIONS)]
+    bounds = [[-100.0, 100.0] for _ in range(DIMENSIONS)]
 
     parameters = AlgorithmParameters(
-        swarm_size=20,
+        swarm_size=SWARM_SIZE,
         bounds=bounds,
         dimensions=DIMENSIONS,
         task=Task.MINIMIZE,
-        iterations=300,
-        initial_inertia=0.8,
+        iterations=ITERATIONS,
+        initial_inertia=INITIAL_INERTIA,
         cognitive_constant=2.0,
         social_constant=2.0,
         dynamic_inertia=DYNAMIC_INERTIA,
@@ -60,16 +60,20 @@ def main():
         optimum_value=FUNCTION.optimum_value,
     )
 
-    # result = run_benchmark_and_plot_aggregated(
-    #     cost_function=FUNCTION.function,
-    #     parameters=parameters,
-    #     log_params=log_params,
-    #     plot_description=PlotDescription(
-    #         problem_name=FUNCTION.name, save_path=SAVE_PATH
-    #     ),
-    #     plot_types=[PlotType.GLOBAL_BEST_COSTS, PlotType.STARTING_AND_ENDING_POSITIONS],
-    #     n_times=30,
-    # )
+    print(FUNCTION.optimum_value)
+
+    result = run_benchmark_and_plot_aggregated(
+        cost_function=FUNCTION.function,
+        parameters=parameters,
+        log_params=log_params,
+        plot_description=PlotDescription(
+            problem_name=FUNCTION.name, save_path=SAVE_PATH
+        ),
+        plot_types=[PlotType.GLOBAL_BEST_COSTS],
+        n_times=1,
+    )
+
+    pretty_print_result(result)
 
 
 if __name__ == "__main__":
