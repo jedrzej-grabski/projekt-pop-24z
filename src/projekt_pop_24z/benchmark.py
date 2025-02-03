@@ -1,4 +1,5 @@
 from __future__ import annotations
+from io import TextIOWrapper
 from typing import Callable
 from dataclasses import dataclass
 
@@ -173,10 +174,14 @@ def run_benchmark_and_plot_aggregated(
     return aggregated_result
 
 
-def pretty_print_result(result: OptimizationResult) -> None:
-    print("-" * 30)
-    print(f"Benchmark Result for Function: {result.logger.name}")
-    print("-" * 30)
+def pretty_print_result(result: OptimizationResult, sink: TextIOWrapper) -> None:
+
+    def _print(text):
+        print(text, file=sink)
+
+    _print("-" * 30)
+    _print(f"Benchmark Result for Function: {result.logger.name}")
+    _print("-" * 30)
 
     # Algorithm Parameters as a Table
     params = result.algorithm_parameters
@@ -195,19 +200,19 @@ def pretty_print_result(result: OptimizationResult) -> None:
     if params.dynamic_inertia:
         param_table.append(["Inertia Decay", params.inertia_params.inertia_decay])
 
-    print("\nAlgorithm Parameters:")
-    print(tabulate(param_table, headers=["Parameter", "Value"], tablefmt="grid"))
+    _print("\nAlgorithm Parameters:")
+    _print(tabulate(param_table, headers=["Parameter", "Value"], tablefmt="grid"))
 
     # Optimization Results
-    print("\nOptimization Results:")
-    print(f"- Best Position: {[round(pos, 5) for pos in result.best_position]}")
-    print(f"- Best Cost: {result.best_cost:.10f}")
+    _print("\nOptimization Results:")
+    _print(f"- Best Position: {[round(pos, 5) for pos in result.best_position]}")
+    _print(f"- Best Cost: {result.best_cost:.10f}")
     if result.logger.epsilon != -1:
-        print(f"- Epsilon: {result.logger.epsilon}")
+        _print(f"- Epsilon: {result.logger.epsilon}")
         if result.logger.epsilon_reached:
-            print(
+            _print(
                 f"- Iterations until epsilon: {result.logger.iterations_until_epsilon}"
             )
         else:
-            print("- Epsilon not reached.")
-    print("\n" + "=|=" * 30 + "\n")
+            _print("- Epsilon not reached.")
+    _print("\n" + "=|=" * 30 + "\n")
