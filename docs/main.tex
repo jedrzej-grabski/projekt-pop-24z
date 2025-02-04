@@ -132,7 +132,8 @@ Ze względu na dużą liczbę parametrów, część z nich musiała zostać usta
 	      w której iteracji dotarł do epsilona, co pozwala zmierzyć zbieżność do punktu o określonej jakości. W praktyce tak niska
 	      wartość okazała się oczywiście zbyt niska dla wielowymiarowych funkcji i wymagałaby indywidualnego arbitralnego strojenia
 	      w zależności od funkcji i wymiaru, brana była pod uwagę przy badaniu \ref{convergence_table}.
-	\item Wartość współczynnika bezwładności lub, w przypadku dynamicznego współczynnika bezwładności $w = 0.1$
+	\item Wartość początkowa współczynnika bezwładności wynosi $w = 0.1$.
+	\item Wartość minimalna wsp. bezwładności w adaptacyjnym wariancie ustalona jest na 0.01, a maksymalna na 0.1 - odpowiada początkowej.
 \end{itemize}
 
 Początkowa wartość współczynnika bezwładności została wybrana eksperymentalnie przez zbadanie najlepszej wartości f. Rosenbrocka w 10 wymiarach w zależności od
