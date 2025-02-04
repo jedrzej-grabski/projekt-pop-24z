@@ -60,11 +60,10 @@ Po konsultacji z Prowadzącym, proponujemy dwa dodatkowe sposoby modyfikacji czy
 	      \[
 		      w_{k+1} =
 		      \begin{cases}
-			      1.01w_{k}, & \text{jeśli } gbest_{k+1} = gbest_{k}    \\
-			      0.95w_{k}, & \text{jeśli } gbest_{k+1} \neq gbest_{k}
+			      aw_{k}, & \text{jeśli } gbest_{k+1} \neq gbest_{k} \\
+			      bw_{k}, & \text{jeśli } gbest_{k+1} = gbest_{k}
 		      \end{cases}
 	      \]
-	      Wartości $1.01$ oraz $0.95$ zostały dobrane eksperymentalnie.
 \end{itemize}
 
 \section{Sposób przeprowadzania badań, przyjęte założenia}
@@ -134,7 +133,6 @@ Ze względu na dużą liczbę parametrów, część z nich musiała zostać usta
 	      wartość okazała się oczywiście zbyt niska dla wielowymiarowych funkcji i wymagałaby indywidualnego arbitralnego strojenia
 	      w zależności od funkcji i wymiaru, brana była pod uwagę przy badaniu \ref{convergence_table}.
 	\item Wartość współczynnika bezwładności lub, w przypadku dynamicznego współczynnika bezwładności $w = 0.1$
-	\item Wartość współczynnika $u$ używanego do obniżania wartości bezwładności $u = 1.0001$
 \end{itemize}
 
 Początkowa wartość współczynnika bezwładności została wybrana eksperymentalnie przez zbadanie najlepszej wartości f. Rosenbrocka w 10 wymiarach w zależności od
@@ -146,7 +144,7 @@ jego wartości. Wyniki znajdują się w tabeli \ref{tab:test_rosenbrock}.
 		\hline
 		DI / $\omega_0$ & 0.05 & 0.1 & 0.2 & 0.4 & 0.7  \\
 		\hline
-		Nie             & 36   & 34  & 47  & 62  & 1798 \\
+		exp/1.0001      & 36   & 34  & 47  & 62  & 1798 \\
 		Tak             & 30   & 29  & 40  & 60  & 1539 \\
 		\hline
 	\end{tabular}
@@ -156,7 +154,6 @@ jego wartości. Wyniki znajdują się w tabeli \ref{tab:test_rosenbrock}.
 
 
 Badanie było przeprowadzone dla różnych funkcji, wyniki były zbliżone.
-Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości współczynnika $u$.
 
 
 \pagebreak
@@ -167,10 +164,16 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		DI  / Dim & 5             & 10     & 20     \\
+		DI  / Dim        & 5          & 10             & 20              \\
 		\hline
-		Nie       & $8.90e^{-12}$ & 0.0184 & 2.2144 \\
-		Tak       & $6.93e^{-12}$ & 0.0243 & 2.2864 \\
+		brak             & \textbf{0} & 0.018          & \textbf{2.2144} \\
+		exp, $u=1.0001$  & \textbf{0} & 0.020          & 2.3777          \\
+		exp, $u=1.0003$  & \textbf{0} & 0.029          & 2.4805          \\
+		exp, $u=1.0005$  & \textbf{0} & 0.017          & 2.2693          \\
+		liniowe 0.01/0.1 & \textbf{0} & 0.044          & 3.0391          \\
+		adapt 0.95/1.01  & \textbf{0} & 0.180          & 3.1600          \\
+		adapt, 0.99/1.01 & \textbf{0} & 0.377          & 2.7984          \\
+		adapt, 0.99/1.05 & \textbf{0} & \textbf{0.008} & 3.2574          \\
 		\hline
 	\end{tabular}
 	\caption{Wartość f. sferycznej dla najlepszego znalezionego punktu w zależności od wymiaru}
@@ -181,10 +184,16 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		DI / Dim & 5     & 10     & 20      \\
+		DI / Dim         & 5             & 10             & 20              \\
 		\hline
-		Nie      & 3.546 & 29.157 & 413.303 \\
-		Tak      & 2.516 & 33.790 & 414.403 \\
+		brak             & 3.54          & 29.15          & 413.30          \\
+		exp, $u=1.0001$  & 2.33          & 25.09          & 398.96          \\
+		exp, $u=1.0003$  & 2.83          & 52.48          & 463.17          \\
+		exp, $u=1.0005$  & 2.23          & 30.83          & \textbf{356.16} \\
+		liniowe 0.01/0.1 & 5.27          & \textbf{19.83} & 421.78          \\
+		adapt 0.95/1.01  & 2.17          & 28.57          & 753.12          \\
+		adapt, 0.99/1.01 & 11.72         & 49.99          & 591.46          \\
+		adapt, 0.99/1.05 & \textbf{1.77} & 52.34          & 521.94          \\
 		\hline
 	\end{tabular}
 	\caption{Wartość f. Rosenbrocka dla najlepszego znalezionego punktu w zależności od wymiaru}
@@ -195,10 +204,16 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		DI / Dim & 5     & 10     & 20     \\
+		DI / Dim         & 5             & 10             & 20             \\
 		\hline
-		Nie      & 7.959 & 18.453 & 44.838 \\
-		Tak      & 7.697 & 19.518 & 46.823 \\
+		brak             & 7.77          & 20.31          & \textbf{44.67} \\
+		exp, $u=1.0001$  & 7.47          & 19.81          & 46.26          \\
+		exp, $u=1.0003$  & \textbf{7.29} & 19.58          & 46.40          \\
+		exp, $u=1.0005$  & 7.80          & 19.61          & 46.18          \\
+		liniowe 0.01/0.1 & 8.79          & \textbf{19.31} & 44.38          \\
+		adapt 0.95/1.01  & 21.21         & 23.78          & 47.80          \\
+		adapt, 0.99/1.01 & 22.12         & 25.95          & 46.80          \\
+		adapt, 0.99/1.05 & 21.69         & 25.99          & 45.53          \\
 		\hline
 	\end{tabular}
 	\caption{Wartość f. Rastrigina dla najlepszego znalezionego punktu w zależności od wymiaru}
@@ -209,14 +224,61 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		DI / Dim & 5     & 10    & 20    \\
+		DI / Dim         & 5             & 10            & 20            \\
 		\hline
-		Nie      & 0.346 & 1.486 & 3.102 \\
-		Tak      & 0.402 & 1.578 & 3.038 \\
+		brak             & 0.42          & 2.10          & 3.05          \\
+		exp, $u=1.0001$  & 0.26          & 1.87          & 2.97          \\
+		exp, $u=1.0003$  & 0.67          & 1.77          & 3.22          \\
+		exp, $u=1.0005$  & 0.43          & \textbf{1.57} & 3.03          \\
+		liniowe 0.01/0.1 & \textbf{0.15} & 1.63          & 3.09          \\
+		adapt 0.95/1.01  & 0.88          & 2.09          & 3.04          \\
+		adapt, 0.99/1.01 & 1.41          & 1.98          & 3.05          \\
+		adapt, 0.99/1.05 & 0.90          & 1.68          & \textbf{2.95} \\
 		\hline
 	\end{tabular}
 	\caption{Wartość f. Ackleya dla najlepszego znalezionego punktu w zależności od wymiaru}
 	\label{tab:ackley_values}
+\end{table}
+
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		DI / Dim         & 10                         & 20                         \\
+		\hline
+		brak             & $1.27 \cdot 10^7$          & $1.54 \cdot 10^8$          \\
+		exp, $u=1.0001$  & $1.21 \cdot 10^7$          & $5.31 \cdot 10^7$          \\
+		exp, $u=1.0003$  & $1.59 \cdot 10^7$          & $\mathbf{2.33 \cdot 10^7}$ \\
+		exp, $u=1.0005$  & $1.29 \cdot 10^7$          & $6.90 \cdot 10^7$          \\
+		liniowe 0.01/0.1 & $\mathbf{8.54 \cdot 10^6}$ & $6.57 \cdot 10^7$          \\
+		adapt 0.95/1.01  & $1.66 \cdot 10^7$          & $1.04 \cdot 10^8$          \\
+		adapt, 0.99/1.01 & $1.02 \cdot 10^7$          & $3.62 \cdot 10^7$          \\
+		adapt, 0.99/1.05 & $8.89 \cdot 10^6$          & $5.99 \cdot 10^7$          \\
+		\hline
+	\end{tabular}
+	\caption{Wartość f. CEC2014F1 dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\label{tab:2014_comp}
+\end{table}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		DI / Dim         & 10                         & 20                         \\
+		\hline
+		brak             & $9.58 \cdot 10^8$          & $5.17 \cdot 10^9$          \\
+		exp, $u=1.0001$  & $\mathbf{3.84 \cdot 10^8}$ & $6.07 \cdot 10^9$          \\
+		exp, $u=1.0003$  & $4.90 \cdot 10^8$          & $9.35 \cdot 10^9$          \\
+		exp, $u=1.0005$  & $6.48 \cdot 10^8$          & $8.54 \cdot 10^9$          \\
+		liniowe 0.01/0.1 & $4.99 \cdot 10^8$          & $7.79 \cdot 10^9$          \\
+		adapt 0.95/1.01  & $7.29 \cdot 10^8$          & $\mathbf{6.79 \cdot 10^9}$ \\
+		adapt, 0.99/1.01 & $5.13 \cdot 10^8$          & $9.82 \cdot 10^9$          \\
+		adapt, 0.99/1.05 & $8.90 \cdot 10^8$          & $1.07 \cdot 10^{10}$       \\
+		\hline
+	\end{tabular}
+	\caption{Wartość f. CEC2017F1 dla najlepszego znalezionego punktu w zależności od wymiaru}
+	\label{tab:2017_comp}
 \end{table}
 
 \pagebreak
@@ -226,10 +288,16 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline
-		DI / Funkcja & Sferyczna & Ackley & Rosenbrock & Rastrigin \\
+		DI / Funkcja     & Sferyczna & Ackley & Rosenbrock & Rastrigin \\
 		\hline
-		Nie          & 37        & 57     & NA         & NA        \\
-		Tak          & 27        & 243    & NA         & NA        \\
+		brak             & 4         & 12     & NA         & NA        \\
+		exp, $u=1.0001$  & 4         & 12     & NA         & 9         \\
+		exp, $u=1.0003$  & 4         & 12     & 61         & 8         \\
+		exp, $u=1.0005$  & 4         & 12     & NA         & 8         \\
+		liniowe 0.01/0.1 & 4         & 12     & NA         & 9         \\
+		adapt 0.95/1.01  & 4         & 12     & 162        & 9         \\
+		adapt, 0.99/1.01 & 4         & 12     & 134        & 8         \\
+		adapt, 0.99/1.05 & 4         & 12     & 130        & 7         \\
 		\hline
 	\end{tabular}
 	\caption{Uśrednione iteracje do znalezienia $eps$, 2 wymiary}
@@ -244,7 +312,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{global_best_Ackley_10d_10_True.png}
-		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. Ackleya, 10 wymiarów}
+		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. Ackleya, 10 wymiarów, inercja wykładnicza $u = 1.0001$}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{0.49\textwidth}
@@ -260,7 +328,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{global_best_Rastrigin_4d_4_True.png}
-		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. Rastrigina, 4 wymiary}
+		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. Rastrigina, 4 wymiary, inercja wykładnicza $u = 1.0001$}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{0.49\textwidth}
@@ -275,7 +343,7 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{global_best_Sphere_2d_2_True.png}
-		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. sferyczna, 2 wymiary}
+		\caption{Tempo zbieżności algorytmu z dynamiczną inercją - f. sferyczna, 2 wymiary, inercja wykładnicza $u = 1.0001$}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{0.49\textwidth}
@@ -302,6 +370,21 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\label{3d_comp}
 \end{figure}
 
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{cec2014_10_none.png}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{cec2014_10_exponential10005.png}
+		\caption{Najszybciej zbiegająca wśród alternatyw - wariant wykładniczy z $u = 1.0005$}
+	\end{subfigure}
+	\caption{Porównanie zbieżności dla f. CEC2014F1 w 10 wymiarach}
+	\label{cec2014_comp}
+\end{figure}
+
 \pagebreak
 \FloatBarrier
 
@@ -312,22 +395,27 @@ Analogiczna próba została przeprowadzona w celu ustalenia optymalnej wartości
 	\centering
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{start_end_Ackley_2d_2_True.png}
-		\caption{Uśrednione punkty startowe i końcowe - f. Ackleya, 2 wymiary, dynamiczna inercja}
+		\caption{Uśrednione punkty startowe i końcowe - f. Ackleya, 2 wymiary, dynamiczna inercja wykładnicza o $u = 1.0001$}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{start_end_Ackley_2d_2_False.png}
-		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Rastrigina, 2 wymiary}
+		\caption{Tempo zbieżności algorytmu ze statyczną inercją - f. Ackleya, 2 wymiary}
 	\end{subfigure}
-	\caption{Uśrednione punkty startowe i końcowe - f. Ackleya, 2 wymiary, statyczna inercja}
+	\caption{Uśrednione punkty startowe i końcowe - f. Ackleya, 2 wymiary}
 	\label{ackley_start_end}
 \end{figure}
 
 \subsection*{Wnioski}
 Na podstawie tabel \ref{tab:sphere_values}, \ref{tab:rosenbrock_values}, \ref{tab:rastrigin_values}, \ref{tab:ackley_values} możemy stwierdzić, że
-zastosowanie dynamicznego współczynnika bezwładności nie wydaje się negatywnie wpływać na jakość znajdowanych rozwiązań.
+zastosowanie dynamicznego współczynnika bezwładności nie wydaje się negatywnie wpływać na jakość znajdowanych rozwiązań. Żaden z zaproponowanych wariantów
+nie wydaje się być dużo skuteczniejszy od pozostałych, jednak możemy spróbować wysunąć wnioski dotyczące optymalnego doboru parametrów w zakresie poszczególnych metod.
+\begin{itemize}
+	\item Dla wykładniczej zmiany współczynnika wyniki wydają się być podobnej jakości, najczęściej jednak najlepsza spośród trzech przetestowanych wartości $u$ wydaje się być $1.0001$.
+	\item W przypadku adaptacyjnej zmiany wartości współczynnika, jednoznacznie najskuteczniejszy okazał się wariant $a = 0.99, b = 1.05$.
+\end{itemize}
 
-Wykresy \ref{20d_comp} oraz \ref{4d_comp} wydają się pokazywać, że dla nastaw, które wydawały się optymalne, w większych wymiarowościach nie jest widoczne tak duże
+Wykresy \ref{20d_comp}, \ref{cec2014_comp} oraz \ref{4d_comp} wydają się pokazywać, że dla nastaw, które wydawały się optymalne, w większych wymiarowościach nie jest widoczne tak duże
 przyspieszenie zbieżności, jak możnaby się spodziewać. Nie wykluczamy, że jest to spowodowane konkretnymi przyjętymi parametrami algorytmu. Przeprowadziliśmy
 także badania dla mniejszej liczby iteracji, jednak wydaje się, że w większej wymiarowości poprawa nie jest odczuwalna. W analizowanej literaturze przyspieszenie
 wystąpiło wyłącznie dla niektórych funkcji benchmarkowych - być może obierając inne przypadki wyniki byłyby bardziej obiecujące.
@@ -348,8 +436,8 @@ rozwiązań dla gorszych punktów startowych. W wizualizacji \ref{ackley_start_e
 w optimum niż w przypadku bez inercji. Jest to spowodowane zwiększoną eksploatacją w końcowych fazach algorytmu. Dla niższej wymiarowości i odpowiednich parametrów, algorytm znajdował
 odpowiednio dobre punkty szybciej, co zobrazowane zostało w tabeli \ref{convergence_table}.
 
-W kwestii porównania zachowań algorytmu w zależności od funkcji, najtrudniejszym zadaniem wydaje się funkcja Rastrigina. Dla wyższych wymiarowości niż 4 nie znajdował on
-konsekwentnie optimum globalnego i cechował się tendencją do utykania w napotkanych optimach lokalnych, co także obrazuje porównanie \ref{3d_comp}.
+W kwestii porównania zachowań algorytmu w zależności od funkcji, najtrudniejsze okazały się funkcje benchmarkowe CEC oraz f. Rastrigina, co obrazuje porównanie \ref{3d_comp} oraz wartości osiągane
+przez algorytm w tabelach \ref{tab:2014_comp}, \ref{tab:2017_comp}.
 
 \section{Bibliografia}
 \begin{itemize}

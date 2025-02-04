@@ -22,8 +22,8 @@ from src.projekt_pop_24z.utils.plotter import PlotType
 DIMENSIONS = 10
 FUNCTION = CEC2014_F1
 DYNAMIC_INERTIA = DynamicInertiaType.NONE
-INERTIA_DECAY = 1.005
-INITIAL_INERTIA = 0.6
+INERTIA_DECAY = 1.0005
+INITIAL_INERTIA = 0.1
 EPSILON = 10e-5
 
 INERTIA_PARAMS = InertiaParams(inertia_decay=INERTIA_DECAY, min_inertia=0.2)
@@ -34,7 +34,7 @@ SOCIAL_CONSTANT = 2.0
 COGNITIVE_CONSTANT = 2.0
 TASK = Task.MINIMIZE
 ITERATIONS = 3000
-SWARM_SIZE = 100
+SWARM_SIZE = 50
 
 
 def main():
@@ -42,7 +42,7 @@ def main():
     parameters = AlgorithmParameters(
         swarm_size=SWARM_SIZE,
         bounds=[FUNCTION.bounds for _ in range(DIMENSIONS)],
-        dimensions=DIMENSIONS,
+        dimensions=2,
         task=Task.MINIMIZE,
         iterations=ITERATIONS,
         initial_inertia=INITIAL_INERTIA,
@@ -68,7 +68,7 @@ def main():
             problem_name=FUNCTION.name, save_path=SAVE_PATH
         ),
         plot_types=[PlotType.GLOBAL_BEST_COSTS],
-        n_times=1,
+        n_times=50,
     )
 
     pretty_print_result(result)

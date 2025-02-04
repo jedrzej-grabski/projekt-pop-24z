@@ -29,17 +29,22 @@ INITIAL_INERTIA = 0.1
 
 
 def all_param_combs():
-    non_cec_funcs = (Sphere, Rosenbrock, Ackley, Rastrigin)
-    non_cec_dims = (5, 10, 20)
+    non_cec_funcs = (Sphere, Ackley, Rosenbrock, Rastrigin)
+    non_cec_dims = (2,)
 
     cec_funcs = (CEC2014_F1, CEC2017_F1)
-    cec_dims = (10, 20)
+    # cec_dims = (10, 20)
 
     exp_u_vals = (1.0001, 1.0003, 1.0005)
     adaptive_bounds = ((0.95, 1.01), (0.99, 1.01), (0.99, 1.05))
 
+    # func_dim_combinations = chain(
+    # product(non_cec_funcs, non_cec_dims), product(cec_funcs, cec_dims)
+    # )
+
     func_dim_combinations = chain(
-        product(non_cec_funcs, non_cec_dims), product(cec_funcs, cec_dims)
+        product(non_cec_funcs, non_cec_dims),
+        # product(cec_funcs, cec_dims),
     )
 
     exp_params = ((DynamicInertiaType.EXPONENTIAL, v) for v in exp_u_vals)
@@ -108,7 +113,7 @@ def main():
                 problem_name=func.name, save_path=plot_path
             ),
             plot_types=[PlotType.GLOBAL_BEST_COSTS],
-            n_times=25 if func not in (CEC2017_F1, CEC2014_F1) else 10,
+            n_times=50 if func not in (CEC2017_F1, CEC2014_F1) else 10,
         )
         with open(result_path, "a") as f:
             pretty_print_result(result, f)
